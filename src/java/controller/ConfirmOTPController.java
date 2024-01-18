@@ -86,6 +86,7 @@ public class ConfirmOTPController extends HttpServlet {
         String email = request.getParameter("newemail");
         String dob = request.getParameter("dob");
         String inputOTP = request.getParameter("OTP");
+        System.out.println(newphone + " nam");
         
         //checking expired generatedValue
         new Validation().checkExistedGeneratedValue(request, response);

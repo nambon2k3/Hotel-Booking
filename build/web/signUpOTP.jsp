@@ -47,6 +47,7 @@
                             </select>
                         </div>
                         <input type="hidden" name="newusername" placeholder="Username" required value="${param.newusername}">
+                        <input type="hidden" name="newphone" placeholder="Username" required value="${param.newphone}">
                         <input type="hidden" name="newpassword" placeholder="Password" required value="${param.newpassword}">
                         <input type="hidden" name="newemail"   placeholder="Email" required value="${param.newemail}" id="email">
                         <input type="hidden" name="dob" placeholder="Dob" required value="${param.dob}">
