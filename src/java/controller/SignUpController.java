@@ -78,13 +78,14 @@ public class SignUpController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //Retrieve parameters
-        String username = request.getParameter("newusername");
+        String newphone = request.getParameter("newphone");
         String password = request.getParameter("newpassword");
         String repass = request.getParameter("repass");
         String email = request.getParameter("newemail");
+        String dob = request.getParameter("dob");
         // Perform input validation
         Validation validate = new Validation();
-        String errorMsg = validate.validateSignUpInput(username, password, repass, email);
+        String errorMsg = validate.validateSignUpInput(newphone, password, repass, email);
         //Check if there are no errors when user inputs
         if (errorMsg.equals("")) {
             EmailUtil emailUtil = new EmailUtil();

@@ -17,22 +17,20 @@ import java.util.regex.Pattern;
  */
 public class Validation {
 
-    public String validateSignUpInput(String username, String password, String repass, String email) {
+    public String validateSignUpInput(String phonenumber, String password, String repass, String email) {
         String errorMsg = "";
         UserDAO user = new UserDAO();
         // Check if username,email existed in the database or violating rules and password violating rules or not match
-        if (user.checkExistedUserWithUsername(username)) {
+        if (user.readUserByUsername(email) != null) {
             errorMsg = "Username is already existed, please use another username.";
-        } else if (!validateUsername(username)) {
-            errorMsg = "Username must contains at least 6 non-special characters, please use another username.";
         } else if (!password.equals(repass)) {
             errorMsg = "Password re-enter is not match";
         } else if (!validatePassword(password)) {
             errorMsg = "Password must contains at least 6 characters";
-        } else if (user.checkExistedEmail(email)) {
-            errorMsg = "Email is already used, please use another email.";
-        } else if (!validateEmail(email)) {
+        }  else if (!validateEmail(email)) {
             errorMsg = "Email is not valid, please a valid email.";
+        } else if (validatePhoneNumber(phonenumber)) {
+            errorMsg = "Phone number is not valid or existed, please a valid phone number.";
         }
         return errorMsg;
     }
@@ -43,6 +41,12 @@ public class Validation {
         Pattern regex = Pattern.compile(pattern);
         Matcher matcher = regex.matcher(username);
         return matcher.find();
+    }
+    
+    public boolean  validatePhoneNumber(String phonenumber) {
+        UserDAO userDao = new UserDAO();
+        String regex = "^d{10}$";
+        return userDao.doesPhoneNumberExist(phonenumber) && phonenumber.matches(regex); 
     }
 
     public boolean validateEmail(String email) {
@@ -95,30 +99,5 @@ public class Validation {
             session.removeAttribute("generatedValue");
             session.removeAttribute("generatedValueTimestamp");
         }
-    }
-    
-    private boolean validateFullname(String fullname) {
-        String pattern = "^[a-zA-Z].*[\\s\\.]*$";
-        Pattern regex = Pattern.compile(pattern);
-        Matcher matcher = regex.matcher(fullname);
-        return matcher.find();
-    }
-
-    public String validateCreateLecturerAccountInput(String username, String fullname, String email) {
-        String errorMsg = "";
-        UserDAO user = new UserDAO();
-        // Check if username,email existed in the database or violating rules and password violating rules or not match
-        if (user.checkExistedUserWithUsername(username)) {
-            errorMsg = "Username is already existed, please use another username.";
-        } else if (!validateUsername(username)) {
-            errorMsg = "Username must contains at least 6 non-special characters, please use another username.";
-        } else if (!validateFullname(fullname)) {
-            errorMsg = "Fullname must contains at least 6 alphabetical characters, please re-enter fullname.";
-        } else if (user.checkExistedEmail(email)) {
-            errorMsg = "Email is already used, please use another email.";
-        } else if (!validateEmail(email)) {
-            errorMsg = "Email is not valid, please a valid email.";
-        }
-        return errorMsg;
     }
 }

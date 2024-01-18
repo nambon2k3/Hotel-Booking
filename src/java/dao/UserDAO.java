@@ -1,111 +1,199 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package dao;
 
 import DAL.DBContext;
-import model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import model.User;
 
+/**
+ *
+ * @author Admin
+ */
+public class UserDAO extends DBContext {
 
-public class UserDAO extends DBContext{
-    
-    public UserDAO() {
-        super();
-    }
-    
-    public User getUserByUsername(String username) {
-        String sql = "SELECT * FROM USERS WHERE Username = ? or email = ?";
-        User user = new User();
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, username);
-            ps.setString(2, username);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setFullName(rs.getString("full_name"));
-                user.setGender(rs.getInt("gender"));
-                user.setDob(rs.getString("dob"));
-                user.setImg(rs.getString("img"));
-                user.setEmail(rs.getString("email"));
-                user.setRole(rs.getInt("role"));
-                user.setStatus(rs.getInt("status"));
-                user.setDescription(rs.getString("description"));
-                user.setWallet(rs.getDouble("wallet"));
+    public int createUser(String role, String phonenumber, String password, String fullName, String email, String gender, String dob) {
+        int userId = 0;
+
+        String sql = "INSERT INTO Users (Role, Email, Password, FullName, Phone, Gender, DOB) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, role);
+            preparedStatement.setString(3, password);
+            preparedStatement.setString(4, fullName);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(5, phonenumber);
+            preparedStatement.setString(6, gender.equals("Male") ? "1" : "0");
+
+            // Parse DOB string to Date
+            Date dobDate = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
+            preparedStatement.setDate(7, new java.sql.Date(dobDate.getTime()));
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                try ( ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        userId = generatedKeys.getInt(1);
+                    }
+                }
             }
-        } catch (Exception e) {
-            System.out.println("getUserByUsername: " + e.getMessage());
+        } catch (SQLException | ParseException e) {
+            System.out.println("createUser: " + e.getMessage());
+        }
+
+        return userId;
+    }
+
+    public User readUserById(int userId) {
+        User user = null;
+        String sql = "SELECT * FROM Users WHERE UserID = ?";
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+
+            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    user = mapResultSetToUser(resultSet);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("readUserById: " + e.getMessage());
+        }
+
+        return user;
+    }
+
+    public List<User> readAllUsers() {
+        List<User> userList = new ArrayList<>();
+
+        String sql = "SELECT * FROM Users";
+
+        try ( Statement statement = connection.createStatement();  ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                User user = mapResultSetToUser(resultSet);
+                userList.add(user);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("readAllUsers: " + e.getMessage());
+        }
+
+        return userList;
+    }
+
+    public void updateUser(User user) {
+        String sql = "UPDATE Users SET Role = ?, Password = ?, FullName = ?, "
+                + "Email = ?, Phone = ?, Gender = ?, DOB = ? WHERE UserID = ?";
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, user.getRole());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getFullName());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getPhone());
+            preparedStatement.setString(6, user.getGender());
+
+            // Parse DOB string to Date
+            Date dobDate = new SimpleDateFormat("yyyy-MM-dd").parse(user.getDob());
+            preparedStatement.setDate(7, new java.sql.Date(dobDate.getTime()));
+
+            preparedStatement.setInt(8, user.getUserId());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException | ParseException e) {
+            System.out.println("updateUser: " + e.getMessage());
+        }
+    }
+
+    public User readUserByUsername(String username) {
+        User user = null;
+
+        String sql = "SELECT * FROM Users WHERE Email = ?";
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, username);
+
+            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    user = mapResultSetToUser(resultSet);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("readUserByUsername: " + e.getMessage());
         }
         return user;
     }
 
-    public boolean checkExistedUserWithUsernameAndPassword(String username, String password) {
-        String sql = "SELECT * FROM USERS WHERE (username = ? or email = ?) AND password = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, username);
-            ps.setString(2, username);
-            ps.setString(3, password);
-            ResultSet rs = ps.executeQuery();
-            return rs.next();
-        } catch (Exception e) {
-            System.out.println("checkExistedUserWithUsernameAndPassword: " + e.getMessage());
-        }
-        return false;
-    }
+    public User readUserByUsernameAndPassword(String username, String password) {
+        User user = null;
 
-    public boolean checkExistedUserWithUsername(String username) {
-        String sql = "SELECT * FROM USERS WHERE username = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-            return rs.next();
-        } catch (Exception e) {
-            System.out.println("checkExistedUserWithUsername: " + e.getMessage());
-        }
-        return false;
-    }
+        String sql = "SELECT * FROM Users WHERE Email = ? AND Password = ?";
 
-    public boolean checkExistedEmail(String email) {
-        String sql = "select email from users where email = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            return rs.next();
-        } catch (Exception e) {
-            System.out.println("checkExistedEmail: " + e.getMessage());
-        }
-        return false;
-    }
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
 
-    public void signUp(String fullName, String gender, String username, String password, String email, String dob) {
-        try {
-            String sql = "INSERT INTO USERS (username, dob, email,full_name,gender,password,role)"
-                    + "VALUES (?, ?, ?, ?, ?, ?,?);";
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setString(1, username);
-            pstm.setString(2, dob);
-            pstm.setString(3, email);
-            pstm.setString(4, fullName);
-            String genderINT = "";
-            if (gender.equals("Male")) {
-                genderINT = 1 + "";
-            } else {
-                genderINT = 0 + "";
+            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    user = mapResultSetToUser(resultSet);
+                }
             }
-            pstm.setString(5, genderINT);
-            pstm.setString(6, password);
-            pstm.setString(7, "3");
-            pstm.executeUpdate();
-            //Close pstm
-            pstm.close();
+
         } catch (SQLException e) {
-            System.out.println("Sign up failed: " + e.getMessage());
+            System.out.println("readUserByUsernameAndPassword: " + e.getMessage());
         }
+
+        return user;
     }
+
+    public boolean doesPhoneNumberExist(String phone) {
+        boolean phoneNumberExists = false;
+
+        String sql = "SELECT COUNT(*) AS count FROM Users WHERE Phone = ?";
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, phone);
+
+            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt("count");
+                    phoneNumberExists = count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("doesPhoneNumberExist: " + e.getMessage());
+        }
+
+        return phoneNumberExists;
+    }
+
+    // Helper method to map ResultSet to User object
+    private User mapResultSetToUser(ResultSet resultSet) throws SQLException {
+        return new User(
+                resultSet.getInt("UserID"),
+                resultSet.getInt("Role"),
+                resultSet.getString("Password"),
+                resultSet.getString("FullName"),
+                resultSet.getString("Email"),
+                resultSet.getString("Phone"),
+                resultSet.getString("Gender"),
+                resultSet.getString("DOB")
+        );
+    }
+
 }

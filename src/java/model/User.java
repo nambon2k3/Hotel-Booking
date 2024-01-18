@@ -1,112 +1,42 @@
 package model;
 
-import java.util.List;
-
 public class User {
-    private String username;
+    private int userId;
+    private int role;
     private String password;
     private String fullName;
     private String email;
-    private String img;
+    private String phone;
+    private String gender;
     private String dob;
-    private int gender;
-    private String description;
-    private int role;
-    private int status;
-    private double wallet;
 
-    public User() {
-    }
-
-    public User(String username, String password, String fullName, String email, String img, String dob, int gender, String description, int role) {
-        this.username = username;
+    public User(int userId, int role, String password, String fullName, String email, String phone, String gender, String dob) {
+        this.userId = userId;
+        this.role = role;
         this.password = password;
         this.fullName = fullName;
         this.email = email;
-        this.img = img;
-        this.dob = dob;
+        this.phone = phone;
         this.gender = gender;
-        this.description = description;
+        this.dob = dob;
+    }
+
+    // Getters and setters
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
         this.role = role;
-    }
-    
-    public User(String fullName, String email, String dob, int gender, String description, int status, String img) {
-        this.fullName = fullName;
-        this.email = email;
-        this.dob = dob;
-        this.gender = gender;
-        this.description = description;
-        this.status = status;
-        this.img = img;
-    }
-
-    public User(String username, String fullName, String email, String dob, int gender, String description, int status, String img) {
-        this.username = username;
-        this.fullName = fullName;
-        this.email = email;
-        this.dob = dob;
-        this.gender = gender;
-        this.description = description;
-        this.status = status;
-        this.img = img;
-    }
-
-    public User(String username, String password, String fullName, String email, String img, String dob, int gender, String description, int role, int status, double wallet) {
-        this.username = username;
-        this.password = password;
-        this.fullName = fullName;
-        this.email = email;
-        this.img = img;
-        this.dob = dob;
-        this.gender = gender;
-        this.description = description;
-        this.role = role;
-        this.status = status;
-        this.wallet = wallet;
-    }
-
-    
-    
-    public double getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(double wallet) {
-        this.wallet = wallet;
-    }
-
-    
-    
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-    
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -133,6 +63,22 @@ public class User {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getDob() {
         return dob;
     }
@@ -141,24 +87,18 @@ public class User {
         this.dob = dob;
     }
 
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
-
+    // toString method for easy debugging
     @Override
     public String toString() {
-        return "User{" + "username=" + username + ", password=" + password + ", fullName=" + fullName + ", email=" + email + ", img=" + img + ", dob=" + dob + ", gender=" + gender + ", description=" + description + ", role=" + role + ", status=" + status + '}';
+        return "User{" +
+                "userId=" + userId +
+                ", role='" + role + '\'' +
+                ", password='" + password + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", gender='" + gender + '\'' +
+                ", dob='" + dob + '\'' +
+                '}';
     }
 }

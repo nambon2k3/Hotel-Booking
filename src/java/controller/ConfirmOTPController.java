@@ -81,12 +81,10 @@ public class ConfirmOTPController extends HttpServlet {
         //Retrieve parameters
         String fullname = request.getParameter("fullname");
         String gender = request.getParameter("gender");
-        String username = request.getParameter("newusername");
+        String newphone = request.getParameter("newphone");
         String password = request.getParameter("newpassword");
-        String repass = request.getParameter("repass");
         String email = request.getParameter("newemail");
         String dob = request.getParameter("dob");
-
         String inputOTP = request.getParameter("OTP");
         
         //checking expired generatedValue
@@ -103,9 +101,9 @@ public class ConfirmOTPController extends HttpServlet {
             UserDAO userDAO = new UserDAO();
             //Get hashing password
             String hashedPassword = (new PasswordUtil()).hashPasswordMD5(password);
-            userDAO.signUp(fullname, gender, username, hashedPassword, email, dob);
+            userDAO.createUser("0", newphone, hashedPassword, fullname, email, gender, dob);
             // Get the user from the database
-            User user = userDAO.getUserByUsername(username);
+            User user = userDAO.readUserByUsername(email);
             // Store the user object in the session
             request.getSession().setAttribute("user", user);
             //Set time out of cookie

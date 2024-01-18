@@ -105,8 +105,8 @@
                         </div>
                         <div class="input-box">
                             <c:set var="errorType1" value="${errorMsg.contains('username')}"/>
-                            <input type="text" name="newusername" class="input-field ${errorType1 ? 'input-field-error' : ''}" placeholder="Username" required value="${param.newusername}">
-                            <i class="bx bx-user"></i>
+                            <input type="text" name="newemail" class="input-field ${errorType1 ? 'input-field-error' : ''}" placeholder="Email" required value="${param.newusername}">
+                            <i class="bx bx-envelope"></i>
                         </div>
                         <div class="two-forms">
                             <c:set var="errorType2" value="${errorMsg.contains('Password')}"/>
@@ -121,8 +121,8 @@
                         </div>
                         <div class="input-box">
                             <c:set var="errorType3" value="${errorMsg.contains('email')}"/>
-                            <input type="text" name="newemail"  class="input-field ${errorType3 ? 'input-field-error' : ''}" placeholder="Email" required value="${param.newemail}">
-                            <i class="bx bx-envelope"></i>
+                            <input type="text" name="newphone"  class="input-field ${errorType3 ? 'input-field-error' : ''}" placeholder="Phonenumber" required value="${param.newemail}">
+                            <i class="bx bx-phone"></i>
                         </div>
                         <div class="input-box">
                             <input type="date" name="dob" id="dob" class="input-field" placeholder="Dob" value="${param.dob}" >
