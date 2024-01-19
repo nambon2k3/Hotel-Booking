@@ -182,6 +182,42 @@ public class UserDAO extends DBContext {
         return phoneNumberExists;
     }
 
+    public boolean doesEmailExist(String email) {
+        boolean emailExists = false;
+
+        String sql = "SELECT COUNT(*) AS count FROM Users WHERE Email = ?";
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, email);
+
+            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt("count");
+                    emailExists = count > 0;
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("doesEmailExist: " + e.getMessage());
+        }
+
+        return emailExists;
+    }
+
+    public void updatePasswordByUsername(String email, String newPassword) {
+        String sql = "UPDATE Users SET Password = ? WHERE Email = ?";
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, email);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("updatePasswordByUsername: " + e.getMessage());
+        }
+    }
+
     // Helper method to map ResultSet to User object
     private User mapResultSetToUser(ResultSet resultSet) throws SQLException {
         return new User(

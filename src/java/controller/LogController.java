@@ -106,7 +106,7 @@ public class LogController extends HttpServlet {
         //Get session
         HttpSession session = request.getSession();
         //check existed account in database
-        if (userDAO.readUserByUsernameAndPassword(username, password) != null) {
+        if (userDAO.readUserByUsernameAndPassword(username, hashedPassword) != null) {
             //get user in database
             User user = userDAO.readUserByUsername(username);
             session.setAttribute("User", user);
