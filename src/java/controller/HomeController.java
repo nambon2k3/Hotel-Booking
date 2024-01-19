@@ -5,6 +5,8 @@
 
 package controller;
 
+import dao.RoomDAO;
+import dao.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +14,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.BedS;
+import model.Rooms;
+import model.Servicess;
 
 /**
  *
@@ -55,6 +61,15 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        //initial DAO and variable
+        RoomDAO roomDAO = new RoomDAO();
+        ServiceDAO serviceDAO = new ServiceDAO();
+        
+        List<Rooms> roomList = roomDAO.getRandomRooms(4);
+        List<Servicess> serviceList = serviceDAO.getTopServices(6);
+        
+        request.setAttribute("roomList", roomList);
+        request.setAttribute("serviceList", serviceList);
         request.getRequestDispatcher("home.jsp").forward(request, response);
     } 
 
