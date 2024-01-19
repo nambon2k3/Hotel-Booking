@@ -104,7 +104,9 @@ public class UserDAO extends DBContext {
             preparedStatement.setString(3, user.getFullName());
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setString(5, user.getPhone());
-            preparedStatement.setString(6, user.getGender());
+            
+            // Set gender as boolean
+            preparedStatement.setBoolean(6, user.getGender().equals("Male"));
 
             // Parse DOB string to Date
             Date dobDate = new SimpleDateFormat("yyyy-MM-dd").parse(user.getDob());

@@ -126,7 +126,7 @@ public class LogController extends HttpServlet {
             return;
         }
 
-        request.getRequestDispatcher("home").forward(request, response);
+        response.sendRedirect("home");
     }
 
     private void setCookieTimeOut(ArrayList<Cookie> listCookie, HttpServletResponse response, int timeExist) {
