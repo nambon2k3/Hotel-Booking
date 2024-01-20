@@ -18,6 +18,7 @@ public class Rooms {
     private int Capacity;
     private String Img;
     private int Status;
+    private String detail;
     private int BID; // Foreign key referencing Beds(BID)
 
     // Constructors, getters, setters, and other methods
@@ -91,6 +92,14 @@ public class Rooms {
         return new BedDAO().getBedById(BID);
     }
 
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+    
     @Override
     public String toString() {
         return "Rooms{" + "RID=" + RID + ", name=" + name + ", price=" + price + ", Size=" + Size + ", Capacity=" + Capacity + ", Img=" + Img + ", Status=" + Status + ", BID=" + BID + '}';

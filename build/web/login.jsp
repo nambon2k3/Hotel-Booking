@@ -20,12 +20,12 @@
         <div class="wrapper">
             <nav class="nav">
                 <div class="nav-logo">
-                    <p>LOGO</p>
+                    <img src="img/logo.png" alt="alt"/>
                 </div>
                 <div class="nav-menu" id="navMenu">
                     <ul>
                         <li><a href="home" class="link active">Home</a></li>
-                        <li><a href="viewCourse" class="link">Course</a></li>
+                        <li><a href="listroom" class="link">Rooms</a></li>
                         <li><a href="#" class="link">Community</a></li>
                         <li><a href="#" class="link">About</a></li>
                     </ul>

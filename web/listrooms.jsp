@@ -1,4 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%-- 
+    Document   : listrooms
+    Created on : Jan 20, 2024, 2:23:09 PM
+    Author     : Admin
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -26,6 +32,8 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
+        
+        
     </head>
 
     <body>
@@ -43,7 +51,7 @@
             <div class="canvas-close">
                 <i class="icon_close"></i>
             </div>
-            <div class="search-icon  search-switch">
+            <div class="search-icon search-switch">
                 <i class="icon_search"></i>
             </div>
             <div class="header-configure-area">
@@ -63,11 +71,11 @@
                 <ul>
                     <li class="active"><a href="./index.html">Home</a></li>
                     <li><a href="./rooms.html">Rooms</a></li>
-                    <li><a href="./about-us.html">About Us</a></li>
+                    <li><a href="./about-us.jsp">About Us</a></li>
                     <li><a href="./pages.html">Pages</a>
                         <ul class="dropdown">
                             <li><a href="./room-details.html">Room Details</a></li>
-                            <li><a href="#">Deluxe Room</a></li>
+                            <li><a href="./blog-details.html">Blog Details</a></li>
                             <li><a href="#">Family Room</a></li>
                             <li><a href="#">Premium Room</a></li>
                         </ul>
@@ -91,7 +99,7 @@
         <!-- Offcanvas Menu Section End -->
 
         <!-- Header Section Begin -->
-        <header class="header-section">
+        <header class="header-section header-normal">
             <div class="top-nav">
                 <div class="container">
                     <div class="row">
@@ -103,26 +111,25 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="tn-right">
-
                                 <a href="listroom" class="bk-btn">Booking Now</a>
                                 <div class="language-option">
                                     <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="">
                                     <c:if test="${sessionScope.User != null}">
-                                        
+
                                         <span>User <i class="fa fa-angle-down"></i></span>
-                                    </c:if>
-                                    <c:if test="${sessionScope.User eq null}">
+                                        </c:if>
+                                        <c:if test="${sessionScope.User eq null}">
                                         <span><i class="fa fa-sign-in"></i></span>
-                                    </c:if>
+                                        </c:if>
                                     <div class="flag-dropdown">
                                         <ul>
                                             <c:if test="${sessionScope.User != null}">
                                                 <li><a href="profile">Profile</a></li>
                                                 <li><a href="log">Logout</a></li>
-                                            </c:if>
-                                            <c:if test="${sessionScope.User eq null}">
+                                                </c:if>
+                                                <c:if test="${sessionScope.User eq null}">
                                                 <li><a href="login.jsp">Login</a></li>
-                                            </c:if>
+                                                </c:if>
                                         </ul>
                                     </div>
                                 </div>
@@ -145,8 +152,8 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li class="active"><a href="home">Home</a></li>
-                                        <li><a href="listroom">Rooms</a></li>
+                                        <li><a href="home">Home</a></li>
+                                        <li class="active"><a href="listroom">Rooms</a></li>
                                         <li><a href="./about-us.jsp">About Us</a></li>
                                         <li><a href="./pages.html">Pages</a>
                                             <ul class="dropdown">
@@ -171,187 +178,77 @@
         </header>
         <!-- Header End -->
 
-        <!-- Hero Section Begin -->
-        <section class="hero-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="hero-text">
-                            <h1>Sona A Luxury Hotel</h1>
-                            <p>Here are the best hotel booking sites, including recommendations for international
-                                travel and for finding low-priced hotel rooms.</p>
-                            <a href="listroom" class="primary-btn">Discover Now</a>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-            <div class="hero-slider owl-carousel">
-                <div class="hs-item set-bg" data-setbg="img/hero/hero-1.jpg"></div>
-                <div class="hs-item set-bg" data-setbg="img/hero/hero-2.jpg"></div>
-                <div class="hs-item set-bg" data-setbg="img/hero/hero-3.jpg"></div>
-            </div>
-        </section>
-        <!-- Hero Section End -->
-
-        <!-- About Us Section Begin -->
-        <section class="aboutus-section spad">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="about-text">
-                            <div class="section-title">
-                                <span>About Us</span>
-                                <h2>Intercontinental LA <br />Westlake Hotel</h2>
-                            </div>
-                            <p class="f-para">Sona.com is a leading online accommodation site. We’re passionate about
-                                travel. Every day, we inspire and reach millions of travelers across 90 local websites in 41
-                                languages.</p>
-                            <p class="s-para">So when it comes to booking the perfect hotel, vacation rental, resort,
-                                apartment, guest house, or tree house, we’ve got you covered.</p>
-                            <a href="#" class="primary-btn about-btn">Read More</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="about-pic">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <img src="img/about/about-1.jpg" alt="">
-                                </div>
-                                <div class="col-sm-6">
-                                    <img src="img/about/about-2.jpg" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- About Us Section End -->
-
-        <!-- Services Section End -->
-        <section class="services-section spad">
+        <!-- Breadcrumb Section Begin -->
+        <div class="breadcrumb-section">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="section-title">
-                            <span>What We Do</span>
-                            <h2>Discover Our Services</h2>
+                        <div class="breadcrumb-text">
+                            <h2>Our Rooms</h2>
+                            <div class="bt-option">
+                                <a href="home">Home</a>
+                                <span>Rooms</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <!-- Breadcrumb Section End -->
+
+        <!-- Rooms Section Begin -->
+        <section class="rooms-section spad">
+            <div class="container">
                 <div class="row">
-                    <c:forEach items="${serviceList}" var="service">
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="service-item">
-                                <i class="${service.getIcon()}"></i>
-                                <h4>${service.getServiceName()}</h4>
-                                <p>${service.getDescription()}</p>
+                    <c:forEach items="${requestScope.roomList}" var="room">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="room-item">
+                                <img src="${room.getImg()}" alt="" style="aspect-ratio: 1.5/1">
+                                <div class="ri-text">
+                                    <h4>${room.getName()}</h4>
+                                    <h3>${room.getPrice()}$<span>/Pernight</span></h3>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="r-o">Size:</td>
+                                                <td>${room.getSize()} ft</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="r-o">Capacity:</td>
+                                                <td>Max persion ${room.getCapacity()}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="r-o">Bed:</td>
+                                                <td>${room.getBedSById().getBedName()}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="r-o">Services:</td>
+                                                <td>Wifi, Television, Bathroom,...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <a href="roomdetail?id=${room.getRID()}" class="primary-btn">More Details</a>
+                                </div>
                             </div>
                         </div>
                     </c:forEach>
-
-                </div>
-            </div>
-        </section>
-        <!-- Services Section End -->
-
-        <!-- Home Room Section Begin -->
-        <section class="hp-room-section">
-            <div class="container-fluid">
-                <div class="hp-room-items">
-                    <div class="row">
-                        <c:forEach items="${requestScope.roomList}" var="room">
-                            <div class="col-lg-3 col-md-6">
-                                <div class="hp-room-item set-bg" data-setbg="${room.getImg()}">
-                                    <div class="hr-text">
-                                        <h3>${room.getName()}</h3>
-                                        <h2>${room.getPrice()}<span>/Pernight</span></h2>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="r-o">Size:</td>
-                                                    <td>${room.getSize()} ft</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="r-o">Capacity:</td>
-                                                    <td>Max persion ${room.getCapacity()}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="r-o">Bed:</td>
-                                                    <td>${room.getBedSById().getBedName()}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="r-o">Services:</td>
-                                                    <td>Wifi, Television, Bathroom,...</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <a href="roomdetail?id=${room.getRID()}" class="primary-btn">More Details</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:forEach>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Home Room Section End -->
-
-        <!-- Testimonial Section Begin -->
-        <section class="testimonial-section spad">
-            <div class="container">
-                <div class="row">
                     <div class="col-lg-12">
-                        <div class="section-title">
-                            <span>Testimonials</span>
-                            <h2>What Customers Say?</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-8 offset-lg-2">
-                        <div class="testimonial-slider owl-carousel">
-                            <div class="ts-item">
-                                <p>After a construction project took longer than expected, my husband, my daughter and I
-                                    needed a place to stay for a few nights. As a Chicago resident, we know a lot about our
-                                    city, neighborhood and the types of housing options available and absolutely love our
-                                    vacation at Sona Hotel.</p>
-                                <div class="ti-author">
-                                    <div class="rating">
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star-half_alt"></i>
-                                    </div>
-                                    <h5> - Alexander Vasquez</h5>
-                                </div>
-                                <img src="img/testimonial-logo.png" alt="">
-                            </div>
-                            <div class="ts-item">
-                                <p>After a construction project took longer than expected, my husband, my daughter and I
-                                    needed a place to stay for a few nights. As a Chicago resident, we know a lot about our
-                                    city, neighborhood and the types of housing options available and absolutely love our
-                                    vacation at Sona Hotel.</p>
-                                <div class="ti-author">
-                                    <div class="rating">
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star-half_alt"></i>
-                                    </div>
-                                    <h5> - Alexander Vasquez</h5>
-                                </div>
-                                <img src="img/testimonial-logo.png" alt="">
-                            </div>
+                        <div class="room-pagination">
+                            <c:if test="${index ne 1}">
+                                <a href="listroom?index=${index -1}">Previous <i class="fa fa-long-arrow-left"></i></a>
+                            </c:if>
+                            <c:forEach begin="1" end="${requestScope.endPage}" var="page">
+                                <a href="listroom?index=${page}" ${page == index ? 'style="background-color: #DFA974; color: white"' : ''}>${page}</a>
+                            </c:forEach>
+                            <c:if test="${index ne endPage}">
+                                <a href="listroom?index=${index + 1}">Next <i class="fa fa-long-arrow-right"></i></a>
+                            </c:if>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- Testimonial Section End --> 
+        <!-- Rooms Section End -->
 
         <!-- Footer Section Begin -->
         <footer class="footer-section">

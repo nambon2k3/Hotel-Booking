@@ -104,7 +104,7 @@
                         <div class="col-lg-6">
                             <div class="tn-right">
 
-                                <a href="#" class="bk-btn">Booking Now</a>
+                                <a href="listroom" class="bk-btn">Booking Now</a>
                                 <div class="language-option">
                                     <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="">
                                     <c:if test="${sessionScope.User != null}">
@@ -136,7 +136,7 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="logo">
-                                <a href="./index.html">
+                                <a href="home">
                                     <img src="img/logo.png" alt="">
                                 </a>
                             </div>
@@ -145,9 +145,9 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li class="active"><a href="./index.html">Home</a></li>
-                                        <li><a href="./rooms.html">Rooms</a></li>
-                                        <li><a href="./about-us.html">About Us</a></li>
+                                        <li class="active"><a href="home">Home</a></li>
+                                        <li><a href="listroom">Rooms</a></li>
+                                        <li><a href="./about-us.jsp">About Us</a></li>
                                         <li><a href="./pages.html">Pages</a>
                                             <ul class="dropdown">
                                                 <li><a href="./room-details.html">Room Details</a></li>
@@ -180,41 +180,10 @@
                             <h1>Sona A Luxury Hotel</h1>
                             <p>Here are the best hotel booking sites, including recommendations for international
                                 travel and for finding low-priced hotel rooms.</p>
-                            <a href="#" class="primary-btn">Discover Now</a>
+                            <a href="listroom" class="primary-btn">Discover Now</a>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-5 offset-xl-2 offset-lg-1">
-                        <div class="booking-form">
-                            <h3>Booking Your Hotel</h3>
-                            <form action="#">
-                                <div class="check-date">
-                                    <label for="date-in">Check In:</label>
-                                    <input type="text" class="date-input" id="date-in">
-                                    <i class="icon_calendar"></i>
-                                </div>
-                                <div class="check-date">
-                                    <label for="date-out">Check Out:</label>
-                                    <input type="text" class="date-input" id="date-out">
-                                    <i class="icon_calendar"></i>
-                                </div>
-                                <div class="select-option">
-                                    <label for="guest">Guests:</label>
-                                    <select id="guest">
-                                        <option value="">2 Adults</option>
-                                        <option value="">3 Adults</option>
-                                    </select>
-                                </div>
-                                <div class="select-option">
-                                    <label for="room">Room:</label>
-                                    <select id="room">
-                                        <option value="">1 Room</option>
-                                        <option value="">2 Room</option>
-                                    </select>
-                                </div>
-                                <button type="submit">Check Availability</button>
-                            </form>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             <div class="hero-slider owl-carousel">
@@ -318,7 +287,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <a href="#" class="primary-btn">More Details</a>
+                                        <a href="roomdetail?id=${room.getRID()}" class="primary-btn">More Details</a>
                                     </div>
                                 </div>
                             </div>
