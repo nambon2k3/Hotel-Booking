@@ -283,7 +283,9 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="r-o">Services:</td>
-                                                    <td>Wifi, Television, Bathroom,...</td>
+                                                    <td>
+                                                        ${room.listServiceInString()}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>

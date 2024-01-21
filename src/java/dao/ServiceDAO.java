@@ -16,26 +16,51 @@ import model.Servicess;
  *
  * @author Admin
  */
-public class ServiceDAO extends DBContext{
+public class ServiceDAO extends DBContext {
+
     public List<Servicess> getTopServices(int count) {
-    List<Servicess> serviceList = new ArrayList<>();
+        List<Servicess> serviceList = new ArrayList<>();
 
-    try {
-        String query = "SELECT TOP (?) * FROM Servicess";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setInt(1, count);
+        try {
+            String query = "SELECT TOP (?) * FROM Servicess";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, count);
 
-        ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-        while (resultSet.next()) {
-            Servicess service = Servicess.createFromResultSet(resultSet);
-            serviceList.add(service);
+            while (resultSet.next()) {
+                Servicess service = Servicess.createFromResultSet(resultSet);
+                serviceList.add(service);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("getTopServices: " + e.getMessage());
         }
 
-    } catch (SQLException e) {
-        System.out.println("getTopServices: " + e.getMessage());
+        return serviceList;
     }
 
-    return serviceList;
-}
+    public List<Servicess> getServicesByRoomId(int roomId) {
+        List<Servicess> serviceList = new ArrayList<>();
+
+        try {
+            String query = "SELECT S.* FROM Servicess S "
+                    + "JOIN RoomServices RS ON S.SeID = RS.SeID "
+                    + "WHERE RS.RID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, roomId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Servicess service = Servicess.createFromResultSet(resultSet);
+                serviceList.add(service);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("getServicesByRoomId: " + e.getMessage());
+        }
+
+        return serviceList;
+    }
 }
