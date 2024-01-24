@@ -45,44 +45,44 @@
                 margin-bottom: 25px;
             }
         </style>
-        
-    <style>
-        .footer-color {
-            background: #7dbaab;
-        }
 
-        .footer-btn {
-            background: #415762;
-        }
+        <style>
+            .footer-color {
+                background: #7dbaab;
+            }
 
-        .check-container {
-            background: #7dbaab;
-            height: 82px;
-            width: 82px;
-        }
+            .footer-btn {
+                background: #415762;
+            }
 
-        .iconheight {
-            height: 36px;
-            width: 36px;
-        }
+            .check-container {
+                background: #7dbaab;
+                height: 82px;
+                width: 82px;
+            }
 
-        .btn:hover {
-            color: var(--bs-btn-hover-color);
-            background: #415762;
-            border-color: #415762;
-        }
+            .iconheight {
+                height: 36px;
+                width: 36px;
+            }
 
-        .angle::after {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            top: -1px;
-            left: 48%;
-            background: #fff;
-            clip-path: polygon(50% 50%, 0 0, 100% 0);
-        }
-    </style>
+            .btn:hover {
+                color: var(--bs-btn-hover-color);
+                background: #415762;
+                border-color: #415762;
+            }
+
+            .angle::after {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                top: -1px;
+                left: 48%;
+                background: #fff;
+                clip-path: polygon(50% 50%, 0 0, 100% 0);
+            }
+        </style>
     </head>
 
     <body>
@@ -363,20 +363,21 @@
                     <div class="col-lg-4">
                         <div class="room-booking">
                             <h3>Your Reservation</h3>
-                            <form action="#" class="ra-form">
+                            <form action="checkavailable" class="ra-form">
+                                <input type="hidden" name="id" value="${room.getRID()}">
                                 <div class="check-date">
                                     <label for="date-in">Check In:</label>
-                                    <input type="text" class="date-input" id="date-in">
+                                    <input type="text" class="date-input" id="date-in" name="checkIn" required>
                                     <i class="icon_calendar"></i>
                                 </div>
                                 <div class="check-date">
                                     <label for="date-out">Check Out:</label>
-                                    <input type="text" class="date-input" id="date-out">
+                                    <input type="text" class="date-input" id="date-out" name="checkOut" required>
                                     <i class="icon_calendar"></i>
                                 </div>
                                 <div class="select-option">
                                     <label for="guest">Number People: </label>
-                                    <select id="guest">
+                                    <select id="guest" name="numPeople">
                                         <c:forEach begin="1" end="${room.getCapacity()}" var="number">
                                             <option value="${number}">${number} Person</option>
                                         </c:forEach>
@@ -385,9 +386,10 @@
                                 </div>
                                 <div class="select-option">
                                     <label for="room">Number Room:</label>
-                                    <input id="room" type="text" placeholder="Number of rooms">
+                                    <input id="room" style="color: #19191a" type="text" placeholder="Number of rooms" name="numRoom" value="1" required>
                                 </div>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Check availability</button>
+                                <button type="submit" class="btn btn-primary">Check availability</button>
+                                <button id="bookingbtnn" type="button" style="display: none" data-bs-toggle="modal" data-bs-target="#exampleModal"/></button>
                             </form>
                         </div>
                     </div>
@@ -475,50 +477,97 @@
             </div>
         </div>
         <!-- Search model end -->
-        
-        
-        <!-- Modal -->
-    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog ">
-            <div class="modal-content rounded-0">
-                <div class="modal-header border-0">
-                    <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1> -->
-                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <div class="d-flex justify-content-center pb-2">
-                            <div class="check-container d-flex justify-content-center align-items-center rounded-pill">
-                                <img class="iconheight" src="https://img.icons8.com/office/16/000000/checkmark--v1.png" alt="check-lg">
+
+        <c:if test="${status eq 'available'}">
+            <!-- Modal -->
+            <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content rounded-0">
+                        <div class="modal-header border-0">
+                            <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1> -->
+                            <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <div class="d-flex justify-content-center pb-2">
+                                    <div class="check-container d-flex justify-content-center align-items-center rounded-pill">
+                                        <img class="iconheight"
+                                             src="https://img.icons8.com/office/16/000000/checkmark--v1.png"
+                                               alt="check-lg">
+                                    </div>
+                                </div>
+                                <h1 class="fw-bold">Awesome!</h1>
+                                <p class="fw-bold">You're ready to proceed using Dbook</p>
                             </div>
                         </div>
-                        <h1 class="fw-bold">Awesome!</h1>
-                        <p class="fw-bold">You're ready to proceed using Dbook</p>
-                    </div>
-                </div>
-                <div class="modal-footer border-0 justify-content-center footer-color rounded-0 position-relative">
-                    <div class="angle "></div>
-                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-                    <div class="text-center p-4 ">
-                        <button type="button" class="btn shadow-none footer-btn text-white rounded-0 px-5">
-                            Start
-                            Booking</button>
+                        <div class="modal-footer border-0 justify-content-center footer-color rounded-0 position-relative">
+                            <div class="angle "></div>
+                            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                            <div class="text-center p-4 ">
+                                <form action="confirmbooking" id="confirmbookingform">
+                                    <input type="hidden" class="date-input" id="date-in" name="checkIn" value="${checkIn}">
+                                    <input type="hidden" class="date-input" id="date-out" name="checkOut" value="${checkOut}">
+                                    <input type="hidden"  name="numRoom" value="${numRoom}">
+                                    <input  type="hidden"name="numPeople" value="${numPeople}">
+                                    <button type="button" class="btn shadow-none footer-btn text-white rounded-0 px-5" onclick="submit()}">
+                                        Start
+                                        Booking</button>
+                                </form>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-        
-        <form action="action" style="display: none">
-            <input type="text" name="id" value="${room.getRID()}">
-            <input type="text" name="id" value="${checkIn}">
-            <input type="text" name="id" value="${checkOut}">
-            <input type="text" name="guests" value="${numGuest}">
-            <input type="text" name="guests" value="${numRoom}">
-        </form>
-    <!-- bootstrap link -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        </c:if>
+
+        <c:if test="${status ne 'available'}">
+            <!-- Modal -->
+            <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content rounded-0">
+                        <div class="modal-header border-0">
+                            <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1> -->
+                            <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <div class="d-flex justify-content-center pb-2">
+                                    <div class="check-container d-flex justify-content-center align-items-center rounded-pill" style="background: red">
+                                        <img class="iconheight"
+                                             src="images/close.png" alt="check-lg">
+                                    </div>
+                                </div>
+                                <h1 class="fw-bold">Sadly!</h1>
+                                <p class="fw-bold">Our room remain only ${total}! please try ours others rooms.</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 justify-content-center footer-color rounded-0 position-relative" style="background: red">
+                            <div class="angle "></div>
+                            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                            <div class="text-center p-4 ">
+                                <form action="confirmbooking" id="confirmbookingform">
+                                    <input type="hidden" class="date-input" id="date-in" name="checkIn" value="${checkIn}">
+                                    <input type="hidden" class="date-input" id="date-out" name="checkOut" value="${checkOut}">
+                                    <input type="hidden"  name="numRoom" value="${numRoom}">
+                                    <input  type="hidden"name="numPeople" value="${numPeople}">
+                                    <button type="button" class="btn shadow-none footer-btn text-white rounded-0 px-5" aria-label="Close" data-bs-dismiss="modal">
+                                        Try Again</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
+
+
+        <!-- bootstrap link -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- Js Plugins -->
         <script src="js/jquery-3.3.1.min.js"></script>
@@ -530,5 +579,18 @@
         <script src="js/owl.carousel.min.js"></script>
         <script src="js/main.js"></script>
     </body>
+
+
+    <script>
+                                        if ('${status}' !== null) {
+                                            document.getElementById('bookingbtnn').click();
+                                        }
+                                        function submit() {
+                                            var form = document.getElementById('confirmbookingform');
+                                            form.submit();
+                                        }
+
+    </script>
+
 
 </html>

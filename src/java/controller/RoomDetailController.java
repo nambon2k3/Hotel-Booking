@@ -57,6 +57,13 @@ public class RoomDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        
+        String checkIn = request.getParameter("checkIn");
+        String checkOut = request.getParameter("checkOut");
+        String numPeople = request.getParameter("numPeople");
+        String numRoom = request.getParameter("numRoom");
+        String status = request.getParameter("status");
+        System.out.println(status);
         //get the room id
         String id_raw = request.getParameter("id");
         
@@ -70,6 +77,11 @@ public class RoomDetailController extends HttpServlet {
         } catch (Exception e) {
             System.out.println("RoomDetailController: " +e.getMessage());
         }
+        request.setAttribute("checkIn", checkIn);
+        request.setAttribute("checkOut", checkOut);
+        request.setAttribute("numPeople", numPeople);
+        request.setAttribute("numRoom", numRoom);
+        request.setAttribute("status", status);
         request.getRequestDispatcher("roomdetail.jsp").forward(request, response);
     } 
 

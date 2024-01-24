@@ -16,7 +16,8 @@ import model.Rooms;
  *
  * @author Admin
  */
-public class RoomDAO extends  DBContext{
+public class RoomDAO extends DBContext {
+
     public List<Rooms> getAllRooms() {
         List<Rooms> roomList = new ArrayList<>();
 
@@ -45,10 +46,7 @@ public class RoomDAO extends  DBContext{
 
         return roomList;
     }
-    
-    
-    
-    
+
     public List<Rooms> getRoomsForPage(int pageNumber, int roomsPerPage) {
         List<Rooms> roomList = new ArrayList<>();
 
@@ -56,8 +54,8 @@ public class RoomDAO extends  DBContext{
             int offset = (pageNumber - 1) * roomsPerPage;
 
             String query = "SELECT * FROM Rooms "
-                         + "ORDER BY RID "
-                         + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+                    + "ORDER BY RID "
+                    + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, offset);
@@ -85,7 +83,7 @@ public class RoomDAO extends  DBContext{
 
         return roomList;
     }
-    
+
     public List<Rooms> getRandomRooms(int count) {
         List<Rooms> roomList = new ArrayList<>();
 
@@ -116,7 +114,7 @@ public class RoomDAO extends  DBContext{
 
         return roomList;
     }
-    
+
     public int getNumberOfRooms() {
         int numberOfRooms = 0;
 
@@ -135,7 +133,7 @@ public class RoomDAO extends  DBContext{
 
         return numberOfRooms;
     }
-    
+
     public Rooms getRoomById(int roomId) {
         Rooms room = null;
 
@@ -165,7 +163,45 @@ public class RoomDAO extends  DBContext{
 
         return room;
     }
-    
-    
-    
+
+    public int checkAvailable(int roomId, int required) {
+        Rooms room = null;
+
+        try {
+            String query = "SELECT [RID]\n"
+                    + "      ,[Size]\n"
+                    + "      ,[Capacity]\n"
+                    + "      ,[Img]\n"
+                    + "      ,[Status]\n"
+                    + "      ,[BID]\n"
+                    + "      ,[RoomName]\n"
+                    + "      ,[Price]\n"
+                    + "      ,[Details]\n"
+                    + "      ,CASE\n"
+                    + "			WHEN [RID] =r2.RoomID THEN R.TotalRoom - r2.total\n"
+                    + "			ELSE R.TotalRoom\n"
+                    + "		END as RoomLeft\n"
+                    + "from Rooms R LEFT JOIN (SELECT RoomID, count(RoomID) as total from INVOICES\n"
+                    + "where GETDATE() < CheckOutDate\n"
+                    + "group by RoomID) r2\n"
+                    + "on r.RID = r2.RoomID\n"
+                    + "Where R.RID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, roomId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int total = resultSet.getInt("RoomLeft");
+                return total;
+                
+            }
+
+        } catch (SQLException e) {
+            System.out.println("getRoomById: " + e.getMessage());
+        }
+
+        return -1;
+    }
+
 }
