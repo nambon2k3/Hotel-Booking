@@ -510,7 +510,7 @@
                                     <input type="hidden" class="date-input" id="date-out" name="checkOut" value="${checkOut}">
                                     <input type="hidden"  name="numRoom" value="${numRoom}">
                                     <input  type="hidden"name="numPeople" value="${numPeople}">
-                                    <button type="button" class="btn shadow-none footer-btn text-white rounded-0 px-5" onclick="submit()}">
+                                    <button type="button" class="btn shadow-none footer-btn text-white rounded-0 px-5" onclick="submit()">
                                         Start
                                         Booking</button>
                                 </form>
@@ -586,8 +586,7 @@
                                             document.getElementById('bookingbtnn').click();
                                         }
                                         function submit() {
-                                            var form = document.getElementById('confirmbookingform');
-                                            form.submit();
+                                            document.getElementById('confirmbookingform').submit();
                                         }
 
     </script>
