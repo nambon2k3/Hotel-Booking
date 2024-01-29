@@ -130,7 +130,7 @@
                         </ul>
                     </li>
                     <li><a href="./blog.html">News</a></li>
-                    <li><a href="./contact.html">Contact</a></li>
+                    <li><a href="./contact.jsp">Contact</a></li>
                 </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>
@@ -213,7 +213,7 @@
                                             </ul>
                                         </li>
                                         <li><a href="./blog.html">News</a></li>
-                                        <li><a href="./contact.html">Contact</a></li>
+                                        <li><a href="./contact.jsp">Contact</a></li>
                                     </ul>
                                 </nav>
                                 <div class="nav-right search-switch">
@@ -510,6 +510,7 @@
                                     <input type="hidden" class="date-input" id="date-out" name="checkOut" value="${checkOut}">
                                     <input type="hidden"  name="numRoom" value="${numRoom}">
                                     <input  type="hidden"name="numPeople" value="${numPeople}">
+                                    <input  type="hidden"name="id" value="${room.getRID()}">
                                     <button type="button" class="btn shadow-none footer-btn text-white rounded-0 px-5" onclick="submit()">
                                         Start
                                         Booking</button>
@@ -522,7 +523,7 @@
             </div>
         </c:if>
 
-        <c:if test="${status ne 'available'}">
+        <c:if test="${status ne 'available' && status ne null}">
             <!-- Modal -->
             <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog ">

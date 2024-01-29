@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lvhn1/OneDrive/Desktop/ADUC/Hotel-Booking/src/java/dao/UserDAO.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Desktop/ADUC/Hotel-Booking/src/java/util/test.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Desktop/ADUC/Hotel-Booking/src/java/DAL/DBContext.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Desktop/ADUC/Hotel-Booking/src/java/dao/RoomDAO.java</file>
+            <file>file:/D:/Support/SWP_Hotel_Booking/src/java/controller/PaymentController.java</file>
+            <file>file:/D:/Support/SWP_Hotel_Booking/src/java/model/Invoices.java</file>
+            <file>file:/D:/Support/SWP_Hotel_Booking/web/bookingroom.jsp</file>
+            <file>file:/D:/Support/SWP_Hotel_Booking/src/java/dao/InvoicesDAO.java</file>
+            <file>file:/D:/Support/SWP_Hotel_Booking/web/VNPAY-return.jsp</file>
+            <file>file:/D:/Support/SWP_Hotel_Booking/src/java/vnpay/Config.java</file>
         </group>
     </open-files>
 </project-private>

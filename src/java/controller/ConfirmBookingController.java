@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Rooms;
+import model.User;
 
 /**
  *
@@ -73,10 +74,16 @@ public class ConfirmBookingController extends HttpServlet {
         } catch (Exception e) {
             System.out.println("ConfirmBookingController: " + e.getMessage());
         }
+        
+        User u = ((User) request.getSession().getAttribute("User"));
+        
         request.setAttribute("checkIn", checkIn);
         request.setAttribute("checkOut", checkOut);
         request.setAttribute("numPeople", numPeople);
         request.setAttribute("numRoom", numRoom_raw);
+        request.setAttribute("email", u.getEmail());
+        request.setAttribute("phone", u.getPhone());
+        
         request.getRequestDispatcher("bookingroom.jsp").forward(request, response);
     }
 

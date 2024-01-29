@@ -81,7 +81,7 @@
                         </ul>
                     </li>
                     <li><a href="./blog.html">News</a></li>
-                    <li><a href="./contact.html">Contact</a></li>
+                    <li><a href="./contact.jsp">Contact</a></li>
                 </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>
@@ -164,7 +164,7 @@
                                             </ul>
                                         </li>
                                         <li><a href="./blog.html">News</a></li>
-                                        <li><a href="./contact.html">Contact</a></li>
+                                        <li><a href="./contact.jsp">Contact</a></li>
                                     </ul>
                                 </nav>
                                 <div class="nav-right search-switch">
