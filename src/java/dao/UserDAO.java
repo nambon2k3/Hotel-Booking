@@ -104,7 +104,7 @@ public class UserDAO extends DBContext {
             preparedStatement.setString(3, user.getFullName());
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setString(5, user.getPhone());
-            
+
             // Set gender as boolean
             preparedStatement.setBoolean(6, user.getGender().equals("Male"));
 
@@ -117,6 +117,18 @@ public class UserDAO extends DBContext {
             preparedStatement.executeUpdate();
 
         } catch (SQLException | ParseException e) {
+            System.out.println("updateUser: " + e.getMessage());
+        }
+    }
+
+    public void changePassword(String userId, String newPass) {
+        String sql = "UPDATE Users SET Password = ? WHERE UserID = ?";
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, newPass);
+            preparedStatement.setString(2, userId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
             System.out.println("updateUser: " + e.getMessage());
         }
     }

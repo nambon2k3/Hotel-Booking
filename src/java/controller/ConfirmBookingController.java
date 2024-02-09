@@ -76,6 +76,10 @@ public class ConfirmBookingController extends HttpServlet {
         }
         
         User u = ((User) request.getSession().getAttribute("User"));
+        if(u == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
         
         request.setAttribute("checkIn", checkIn);
         request.setAttribute("checkOut", checkOut);

@@ -66,7 +66,7 @@ public class ProfileController extends HttpServlet {
         
         request.setAttribute("user", user);
         
-        request.getRequestDispatcher("profile.jsp").forward(request, response);
+        request.getRequestDispatcher("userprofile.jsp").forward(request, response);
     }
 
     /**
