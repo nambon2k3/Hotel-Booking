@@ -24,6 +24,7 @@
                 <a class="dropdown-item" href="user">User Management</a>
                 <a class="dropdown-item" href="room">Room Management</a>
                 <a class="dropdown-item" href="service">Service Management</a>
+                <a class="dropdown-item" href="chat?action=support">Chat Support</a>
             </div>
         </div>
 
