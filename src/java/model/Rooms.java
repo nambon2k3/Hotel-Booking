@@ -5,6 +5,7 @@
 package model;
 
 import dao.BedDAO;
+import dao.FeedbackDAO;
 import dao.ServiceDAO;
 import java.util.List;
 
@@ -130,6 +131,10 @@ public class Rooms {
             }
         }
         return listServiceString;
+    }
+    
+    public boolean checkFeedback(int userId) {
+        return new FeedbackDAO().getFeedbackByRoomAndUser(RID + "", userId) == null;
     }
     
     

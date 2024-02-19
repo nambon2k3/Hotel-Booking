@@ -130,7 +130,7 @@
                         </ul>
                     </li>
                     <li><a href="./blog.html">News</a></li>
-                    <li><a href="./contact.html">Contact</a></li>
+                    <li><a href="./contact.jsp">Contact</a></li>
                 </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>
@@ -174,6 +174,7 @@
                                         <ul>
                                             <c:if test="${sessionScope.User != null}">
                                                 <li><a href="profile">Profile</a></li>
+                                                <li><a href="listbooked">Booked</a></li> 
                                                 <li><a href="log">Logout</a></li>
                                                 </c:if>
                                                 <c:if test="${sessionScope.User eq null}">
@@ -213,7 +214,7 @@
                                             </ul>
                                         </li>
                                         <li><a href="./blog.html">News</a></li>
-                                        <li><a href="./contact.html">Contact</a></li>
+                                        <li><a href="./contact.jsp">Contact</a></li>
                                     </ul>
                                 </nav>
                                 <div class="nav-right search-switch">
@@ -293,71 +294,28 @@
                         </div>
                         <div class="rd-reviews">
                             <h4>Reviews</h4>
-                            <div class="review-item">
-                                <div class="ri-pic">
-                                    <img src="img/room/avatar/avatar-1.jpg" alt="">
-                                </div>
-                                <div class="ri-text">
-                                    <span>27 Aug 2019</span>
-                                    <div class="rating">
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star-half_alt"></i>
+
+                            <c:forEach items="${listFeedback}" var="fb">
+                                <div class="review-item">
+                                    <div class="ri-pic">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="">
                                     </div>
-                                    <h5>Brandon Kelley</h5>
-                                    <p>Neque porro qui squam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                        adipisci velit, sed quia non numquam eius modi tempora. incidunt ut labore et dolore
-                                        magnam.</p>
-                                </div>
-                            </div>
-                            <div class="review-item">
-                                <div class="ri-pic">
-                                    <img src="img/room/avatar/avatar-2.jpg" alt="">
-                                </div>
-                                <div class="ri-text">
-                                    <span>27 Aug 2019</span>
-                                    <div class="rating">
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star-half_alt"></i>
-                                    </div>
-                                    <h5>Brandon Kelley</h5>
-                                    <p>Neque porro qui squam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                        adipisci velit, sed quia non numquam eius modi tempora. incidunt ut labore et dolore
-                                        magnam.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="review-add">
-                            <h4>Add Review</h4>
-                            <form action="#" class="ra-form">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Name*">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Email*">
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div>
-                                            <h5>You Rating:</h5>
-                                            <div class="rating">
-                                                <i class="icon_star"></i>
-                                                <i class="icon_star"></i>
-                                                <i class="icon_star"></i>
-                                                <i class="icon_star"></i>
-                                                <i class="icon_star-half_alt"></i>
-                                            </div>
+                                    <div class="ri-text">
+                                        <span>${fb.getCreatedDate()}</span>
+                                        <div class="rating">
+                                            <c:forEach begin="1" end="${fb.getRating()}">
+                                                <i class="icon_star active"></i>
+                                            </c:forEach>
+
+                                            <c:forEach begin="${fb.getRating()}" end="4">
+                                                <i class="icon_star "></i>
+                                            </c:forEach>
                                         </div>
-                                        <textarea placeholder="Your Review"></textarea>
-                                        <button type="submit">Submit Now</button>
+                                        <h5>${fb.getUserFeedback().getFullName()}</h5>
+                                        <p>${fb.getContent()}</p>
                                     </div>
                                 </div>
-                            </form>
+                            </c:forEach>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -494,7 +452,7 @@
                                     <div class="check-container d-flex justify-content-center align-items-center rounded-pill">
                                         <img class="iconheight"
                                              src="https://img.icons8.com/office/16/000000/checkmark--v1.png"
-                                               alt="check-lg">
+                                             alt="check-lg">
                                     </div>
                                 </div>
                                 <h1 class="fw-bold">Awesome!</h1>
@@ -510,7 +468,8 @@
                                     <input type="hidden" class="date-input" id="date-out" name="checkOut" value="${checkOut}">
                                     <input type="hidden"  name="numRoom" value="${numRoom}">
                                     <input  type="hidden"name="numPeople" value="${numPeople}">
-                                    <button type="button" class="btn shadow-none footer-btn text-white rounded-0 px-5" onclick="submit()}">
+                                    <input  type="hidden"name="id" value="${room.getRID()}">
+                                    <button type="button" class="btn shadow-none footer-btn text-white rounded-0 px-5" onclick="submit()">
                                         Start
                                         Booking</button>
                                 </form>
@@ -522,7 +481,7 @@
             </div>
         </c:if>
 
-        <c:if test="${status ne 'available'}">
+        <c:if test="${status ne 'available' && status ne null}">
             <!-- Modal -->
             <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog ">
@@ -586,8 +545,7 @@
                                             document.getElementById('bookingbtnn').click();
                                         }
                                         function submit() {
-                                            var form = document.getElementById('confirmbookingform');
-                                            form.submit();
+                                            document.getElementById('confirmbookingform').submit();
                                         }
 
     </script>

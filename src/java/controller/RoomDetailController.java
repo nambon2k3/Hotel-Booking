@@ -5,6 +5,7 @@
 
 package controller;
 
+import dao.FeedbackDAO;
 import dao.RoomDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Feedback;
 import model.Rooms;
 
 /**
@@ -70,6 +73,10 @@ public class RoomDetailController extends HttpServlet {
         //initial dao
         RoomDAO rdao = new RoomDAO();
         
+        
+        List<Feedback> listFeedback = new FeedbackDAO().getFeedbackByRoom(id_raw);
+        
+        
         try {
             int id = Integer.parseInt(id_raw);
             Rooms room = rdao.getRoomById(id);
@@ -82,6 +89,7 @@ public class RoomDetailController extends HttpServlet {
         request.setAttribute("numPeople", numPeople);
         request.setAttribute("numRoom", numRoom);
         request.setAttribute("status", status);
+        request.setAttribute("listFeedback", listFeedback);
         request.getRequestDispatcher("roomdetail.jsp").forward(request, response);
     } 
 
