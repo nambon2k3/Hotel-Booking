@@ -1,5 +1,6 @@
 package util;
 
+import dao.MessageDAO;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 import java.util.HashSet;
 import java.util.Set;
+import model.Message;
 
 @ServerEndpoint("/websocket/{conversationId}")
 public class WebSocket {
@@ -29,8 +31,15 @@ public class WebSocket {
     }
 
     @OnMessage
-    public void onMessage(@PathParam("conversationId") String conversationId, String message, Session session) {
-        broadcast(conversationId, message, session);
+    public void onMessage(@PathParam("conversationId") String conversationId, String msg, Session session) {
+        
+        Message message = new Message();
+        message.setMessage(msg);
+        message.setConversationId(Integer.parseInt(conversationId));
+        
+        new MessageDAO().addMessage(message);
+        
+        broadcast(conversationId, msg, session);
     }
 
     @OnClose
