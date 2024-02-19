@@ -63,7 +63,7 @@
                                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#roomEditModal${room.RID}">
                                     Edit
                                 </button>
-                                <a class="btn btn-secondary" href="service?id=${room.RID}">Services</a>
+                                <a class="btn btn-secondary" href="room-service?id=${room.RID}">Services</a>
                             </td>
                         </tr>
 
