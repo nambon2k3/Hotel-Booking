@@ -262,4 +262,54 @@ public class RoomDAO extends DBContext {
         return -1;
     }
 
+    public boolean addRoom(Rooms room) {
+        try {
+            String query = "INSERT INTO Rooms (Size, Capacity, Img, Status, BID, RoomName, Price, Details) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setInt(1, room.getSize());
+            preparedStatement.setInt(2, room.getCapacity());
+            preparedStatement.setString(3, room.getImg());
+            preparedStatement.setInt(4, room.getStatus());
+            preparedStatement.setInt(5, room.getBID());
+            preparedStatement.setString(6, room.getName());
+            preparedStatement.setDouble(7, room.getPrice());
+            preparedStatement.setString(8, room.getDetail());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.out.println("addRoom: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Method to update an existing room
+    public boolean updateRoom(Rooms room) {
+        try {
+            String query = "UPDATE Rooms SET Size=?, Capacity=?, Img=?, Status=?, BID=?, RoomName=?, Price=?, Details=? "
+                    + "WHERE RID=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setInt(1, room.getSize());
+            preparedStatement.setInt(2, room.getCapacity());
+            preparedStatement.setString(3, room.getImg());
+            preparedStatement.setInt(4, room.getStatus());
+            preparedStatement.setInt(5, room.getBID());
+            preparedStatement.setString(6, room.getName());
+            preparedStatement.setDouble(7, room.getPrice());
+            preparedStatement.setString(8, room.getDetail());
+            preparedStatement.setInt(9, room.getRID());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.out.println("updateRoom: " + e.getMessage());
+            return false;
+        }
+    }
+
 }
