@@ -30,7 +30,7 @@ public class WebSocket {
 
     @OnMessage
     public void onMessage(@PathParam("conversationId") String conversationId, String message, Session session) {
-        broadcast(conversationId, session.getId() + ": " + message, session);
+        broadcast(conversationId, message, session);
     }
 
     @OnClose

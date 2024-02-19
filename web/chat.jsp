@@ -109,7 +109,7 @@
                                     displayMessage("You: " + message);
 
                                     // Send the message over WebSocket
-                                    ws.send(message);
+                                    ws.send('${user ne null ? user.fullName : 'Receptionist'}: ' + message);
                                     messageInput.value = "";
                                 }
                             }
