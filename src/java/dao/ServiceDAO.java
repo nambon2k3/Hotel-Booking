@@ -63,7 +63,7 @@ public class ServiceDAO extends DBContext {
 
         return serviceList;
     }
-    
+
     public List<Servicess> getServices() {
         List<Servicess> serviceList = new ArrayList<>();
 
@@ -84,7 +84,7 @@ public class ServiceDAO extends DBContext {
 
         return serviceList;
     }
-    
+
     public boolean updateService(Servicess service) {
         try {
             String query = "UPDATE Servicess SET ServiceName = ?, Status = ?, Icon = ?, Description = ? WHERE SeID = ?";
@@ -105,7 +105,24 @@ public class ServiceDAO extends DBContext {
             return false;
         }
     }
-    
+
+    public Servicess getServiceById(int serviceId) {
+        Servicess service = null;
+        try {
+            String query = "SELECT * FROM Servicess WHERE SeID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, serviceId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                service = Servicess.createFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            System.out.println("getServiceById: " + e.getMessage());
+        }
+        return service;
+    }
+
     public boolean addService(Servicess service) {
         try {
             String query = "INSERT INTO Servicess (ServiceName, Status, Icon, Description) "
