@@ -23,11 +23,22 @@ public class Rooms {
     private int Status;
     private String detail;
     private int BID; // Foreign key referencing Beds(BID)
+    private int totalRoom;
     
     List<Servicess> listService;
 
     // Constructors, getters, setters, and other methods
 
+    public int getTotalRoom() {
+        return totalRoom;
+    }
+
+    public void setTotalRoom(int totalRoom) {
+        this.totalRoom = totalRoom;
+    }
+
+    
+    
     public int getRID() {
         return RID;
     }

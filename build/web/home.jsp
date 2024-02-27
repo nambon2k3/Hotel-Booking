@@ -26,6 +26,17 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
+        <style>
+            .select-option input[type = text] {
+                width: 100%;
+                height: 50px;
+                border: 1px solid #e5e5e5;
+                font-size: 16px;
+                color: #aaaab3;
+                padding-left: 20px;
+                margin-bottom: 25px;
+            }
+        </style>
     </head>
 
     <body>
@@ -172,28 +183,53 @@
         </header>
         <!-- Header End -->
 
-        <!-- Hero Section Begin -->
-        <section class="hero-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="hero-text">
-                            <h1>Sona A Luxury Hotel</h1>
-                            <p>Here are the best hotel booking sites, including recommendations for international
-                                travel and for finding low-priced hotel rooms.</p>
-                            <a href="listroom" class="primary-btn">Discover Now</a>
-                        </div>
+       <!-- Hero Section Begin -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="hero-text">
+                        <h1>Sona A Luxury Hotel</h1>
+                        <p>Here are the best hotel booking sites, including recommendations for international
+                            travel and for finding low-priced hotel rooms.</p>
+                        <a href="#" class="primary-btn">Discover Now</a>
                     </div>
-                    
+                </div>
+                <div class="col-xl-4 col-lg-5 offset-xl-2 offset-lg-1">
+                    <div class="booking-form">
+                        <h3>Booking Your Hotel</h3>
+                        <form action="listroom" class="ra-form">
+                            <div class="check-date">
+                                <label for="date-in">Check In:</label>
+                                <input type="text" class="date-input" id="date-in" name="checkInDate" required>
+                                <i class="icon_calendar"></i>
+                            </div>
+                            <div class="check-date">
+                                <label for="date-out">Check Out:</label>
+                                <input type="text" class="date-input" id="date-out" name="checkOutDate" required>
+                                <i class="icon_calendar"></i>
+                            </div>
+                            <div class="select-option">
+                                <label for="guest">Capacity:</label>
+                                <select id="guest" name="Capacity">
+                                    <option value="2">2 People</option>
+                                    <option value="3">3 People</option>
+                                    <option value="4">More than 3 People</option>
+                                </select>
+                            </div>
+                            <button type="submit">Check Availability</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div class="hero-slider owl-carousel">
-                <div class="hs-item set-bg" data-setbg="img/hero/hero-1.jpg"></div>
-                <div class="hs-item set-bg" data-setbg="img/hero/hero-2.jpg"></div>
-                <div class="hs-item set-bg" data-setbg="img/hero/hero-3.jpg"></div>
-            </div>
-        </section>
-        <!-- Hero Section End -->
+        </div>
+        <div class="hero-slider owl-carousel">
+            <div class="hs-item set-bg" data-setbg="img/hero/hero-1.jpg"></div>
+            <div class="hs-item set-bg" data-setbg="img/hero/hero-2.jpg"></div>
+            <div class="hs-item set-bg" data-setbg="img/hero/hero-3.jpg"></div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
 
         <!-- About Us Section Begin -->
         <section class="aboutus-section spad">
@@ -445,4 +481,21 @@
         <script src="js/main.js"></script>
     </body>
 
+    <script>
+            let inputCheckIn = document.getElementById('date-in');
+            let inputcheckOut = document.getElementById('date-out');
+            
+            const today = new Date();
+            const year = today.getFullYear();
+            let month = today.getMonth() + 1;
+            let day = today.getDate();
+
+            // Add leading zero for single-digit months and days
+            month = month < 10 ? '0' + month : month;
+            day = day < 10 ? '0' + day : day;
+            let date = year + '-' + month + '-' + day;
+
+            inputCheckIn.value = date;
+            inputcheckOut.value = date;
+        </script>
 </html>

@@ -66,11 +66,14 @@ public class ConfirmBookingController extends HttpServlet {
         String numRoom_raw = request.getParameter("numRoom");
         String id_raw = request.getParameter("id");
 
+        System.out.println(checkIn + " - " + checkOut);
+        
         RoomDAO rdao = new RoomDAO();
         try {
             int id = Integer.parseInt(id_raw);
             Rooms room = rdao.getRoomById(id);
             request.setAttribute("room", room);
+            System.out.println(room.getPrice());
         } catch (Exception e) {
             System.out.println("ConfirmBookingController: " + e.getMessage());
         }

@@ -82,6 +82,26 @@
                 background: #fff;
                 clip-path: polygon(50% 50%, 0 0, 100% 0);
             }
+
+            #btnnn {
+                display: block;
+                font-size: 14px;
+                text-transform: uppercase;
+                border: 1px solid #dfa974;
+                border-radius: 2px;
+                color: #dfa974;
+                font-weight: 500;
+                background: transparent;
+                width: 100%;
+                height: 46px;
+                margin-top: 30px;
+            }
+
+            #btnnn:hover {
+                background: #19191a;
+                color: white;
+            }
+
         </style>
     </head>
 
@@ -266,7 +286,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h2>${room.getPrice()}$<span>/Pernight</span></h2>
+                                <h2>${String.format("%,.0f", room.getPrice())} VND<span>/Pernight</span></h2>
                                 <table>
                                     <tbody>
                                         <tr>
@@ -321,21 +341,23 @@
                     <div class="col-lg-4">
                         <div class="room-booking">
                             <h3>Your Reservation</h3>
-                            <form action="checkavailable" class="ra-form">
+                            <form action="roomdetail" class="ra-form">
                                 <input type="hidden" name="id" value="${room.getRID()}">
                                 <div class="check-date">
                                     <label for="date-in">Check In:</label>
-                                    <input type="text" class="date-input" id="date-in" name="checkIn" required>
+                                    <input type="text" class="date-input" id="date-in" name="checkInDate" value="${checkInDate}" onchange="resetlink()" required>
                                     <i class="icon_calendar"></i>
+                                    
                                 </div>
+                                    <span  id="msggg" style="color: red; display: none">Checkin Date must before Checkout Date</span>
                                 <div class="check-date">
                                     <label for="date-out">Check Out:</label>
-                                    <input type="text" class="date-input" id="date-out" name="checkOut" required>
+                                    <input type="text" class="date-input" id="date-out" name="checkOutDate" value="${checkOutDate}" onchange="resetlink()" required>
                                     <i class="icon_calendar"></i>
                                 </div>
                                 <div class="select-option">
                                     <label for="guest">Number People: </label>
-                                    <select id="guest" name="numPeople">
+                                    <select id="guest" name="numPeople" onchange="resetlink()">
                                         <c:forEach begin="1" end="${room.getCapacity()}" var="number">
                                             <option value="${number}">${number} Person</option>
                                         </c:forEach>
@@ -343,11 +365,11 @@
                                     </select>
                                 </div>
                                 <div class="select-option">
-                                    <label for="room">Number Room:</label>
-                                    <input id="room" style="color: #19191a" type="text" placeholder="Number of rooms" name="numRoom" value="1" required>
+                                    <label for="room">Number Room: (${room.getTotalRoom() } remaining)</label>
+                                    <input id="room" style="color: #19191a" type="text" placeholder="Number of rooms" name="numRoom" value="1" onchange="resetlink()" required>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Check availability</button>
-                                <button id="bookingbtnn" type="button" style="display: none" data-bs-toggle="modal" data-bs-target="#exampleModal"/></button>
+                                <a id="btnnn" href="confirmbooking?id=${room.getRID()}&checkIn=${checkInDate}&checkOut=${checkOutDate}&numPeople=0&numRoom_raw=3}" class="btn btn-primary">Book now</a>
+                                <button type="submit" class="btn btn-primary">Update information</button>
                             </form>
                         </div>
                     </div>
@@ -355,6 +377,30 @@
             </div>
         </section>
         <!-- Room Details Section End -->
+
+        <script>
+            let link = document.getElementById('btnnn');
+            let numberRoom = document.getElementById('room');
+            let numberPeople = document.getElementById('guest');
+            link.href = 'confirmbooking?id=${room.getRID()}&checkIn=${checkInDate}&checkOut=${checkOutDate}&numPeople=' + numberPeople.value + '&numRoom=' + numberRoom.value;
+            function resetlink() {
+                let inputCheckIn = document.getElementById('date-in');
+                let msggg = document.getElementById('msggg');
+                let inputcheckOut = document.getElementById('date-out');
+                let link = document.getElementById('btnnn');
+                let numberRoom = document.getElementById('room');
+                let numberPeople = document.getElementById('guest');
+                link.href = 'confirmbooking?id=${room.getRID()}&checkIn=' + inputCheckIn.value +'&checkOut=' + inputcheckOut.value +'&numPeople=' + numberPeople.value + '&numRoom=' + numberRoom.value;
+                if(inputCheckIn.value > inputcheckOut.value) {
+                    link.href = '#';
+                    msggg.style.display = 'inline';
+                } else {
+                    msggg.style.display = 'none';
+                }
+                    
+                    
+            }
+        </script>
 
 
 
@@ -538,17 +584,5 @@
         <script src="js/owl.carousel.min.js"></script>
         <script src="js/main.js"></script>
     </body>
-
-
-    <script>
-                                        if ('${status}' !== null) {
-                                            document.getElementById('bookingbtnn').click();
-                                        }
-                                        function submit() {
-                                            document.getElementById('confirmbookingform').submit();
-                                        }
-
-    </script>
-
 
 </html>

@@ -81,6 +81,9 @@
             margin-bottom: 24px;
             resize: none;
         }
+        #show:hover {
+            cursor: pointer
+        }
     </style>
 </head>
 
@@ -121,7 +124,7 @@
                     <label for="date-out">Room information:</label>
                     <input type="hidden" class="date-input" id="date-out" name="id" value="${room.getRID()}" >
                     <input type="text" id="date-out" value="${room.getName()}" readonly>
-                        <i id="show" class='bx bx-show' onclick=""></i>
+                        <i id="show" class='bx bx-show' onclick="window.location.href = 'roomdetail?id=${room.getRID()}&checkInDate=${checkIn}&checkOutDate=${checkOut}&Capacity=0'"></i>
                 </div>
                 <div class="select-option">
                     <label for="guest">Guests:</label>
@@ -155,8 +158,8 @@
                 </div>
                 
                 <div class="select-option d-flex justify-content-end" >
-                    <p class="text-left" style="width: fit-content">Total: ${numRoom* 10000}</p>
-                    <input type="hidden" name="amount" value="${numRoom* 10000}">
+                    <p class="text-left" style="width: fit-content">Total: ${String.format("%,.0f", numRoom * room.getPrice())}</p>
+                    <input type="hidden" name="amount" value="${String.format("%,.0f", numRoom * room.getPrice())}">
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center;">
