@@ -105,8 +105,11 @@ public class LogController extends HttpServlet {
 
         //Get session
         HttpSession session = request.getSession();
+        
+        User userDB = userDAO.readUserByUsernameAndPassword(username, hashedPassword);
+        
         //check existed account in database
-        if (userDAO.readUserByUsernameAndPassword(username, hashedPassword) != null) {
+        if (userDB != null) {
             //get user in database
             User user = userDAO.readUserByUsername(username);
             session.setAttribute("User", user);
@@ -126,7 +129,9 @@ public class LogController extends HttpServlet {
             return;
         }
 
-        response.sendRedirect("home");
+        if (userDB.getRole() != 1)
+            response.sendRedirect("home");
+        else response.sendRedirect("user");
     }
 
     private void setCookieTimeOut(ArrayList<Cookie> listCookie, HttpServletResponse response, int timeExist) {
