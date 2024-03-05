@@ -96,4 +96,39 @@ public class InvoicesDAO extends DAL.DBContext {
         return invoicesList;
     }
 
+    public void insertDetail(String[] skillIds, String transactionCode) {
+        String sql = "Insert into InvoiceDetails values ";
+        if (skillIds != null && skillIds.length != 0) {
+            int inId = this.getInvoiceByTransactionCode(transactionCode);
+            System.out.println(inId);
+            for (String skillId : skillIds) {
+                sql += "(" + inId + "," + skillId + "),";
+            }
+            sql = sql.substring(0, sql.length() - 1);
+            System.out.println(sql);
+        }
+        else return;
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("insertDetail: " + ex.getMessage());
+        }
+        
+    }
+    
+    public int getInvoiceByTransactionCode(String transactionCode) {
+        String sql = "select [InID] from INVOICES where transactionCode = ?";
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, transactionCode);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("getInvoiceByTransactionCode: " + ex.getMessage());
+        }
+        return -1;
+    }
+
 }

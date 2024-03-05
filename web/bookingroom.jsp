@@ -111,13 +111,11 @@
                 <div class="check-date" style="display: flex; justify-content: space-between;">
                     <div class="date">
                         <label for="date-in">Check In:</label>
-                        <input type="text" class="date-input" name="checkIn" id="date-in" value="${checkIn}">
-                        <i class="icon_calendar" style="text-align: right; right: 57%;"></i>
+                        <input type="date" name="checkIn" id="date-in" value="${checkIn}" readonly>
                     </div>
                     <div class="date">
                         <label for="date-out">Check Out:</label>
-                        <input type="text" class="date-input" name="checkOut" id="date-out" value="${checkOut}">
-                        <i class="icon_calendar"></i>
+                        <input type="date"name="checkOut" id="date-out" value="${checkOut}" readonly>
                     </div>
                 </div>
                 <div class="check-date">
@@ -141,6 +139,15 @@
                 <div class="select-option">
                     <label for="phone">Phone number:</label>
                     <input id="phone" type="text" placeholder="Phonenumber" value="${phone}" readonly style="color: #19191a">
+                </div>
+                <div class="select-option">
+                    <label>Services Include: </label>
+                    <c:forEach items="${listService}" var="sv">
+                        <div style="background-color: white; font-weight: bold; padding: 10px; width: fit-content; display: inline-block">
+                            ${sv.getServiceName()}
+                             <input type="hidden" name="svId" value="${sv.getSeID()}">
+                        </div>
+                    </c:forEach>
                 </div>
                 <div class="select-option">
                     <label for="payment">Payment Method:</label>

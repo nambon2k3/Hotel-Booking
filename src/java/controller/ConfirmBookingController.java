@@ -5,6 +5,7 @@
 package controller;
 
 import dao.RoomDAO;
+import dao.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,7 +13,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import model.Rooms;
+import model.Servicess;
 import model.User;
 
 /**
@@ -66,8 +70,15 @@ public class ConfirmBookingController extends HttpServlet {
         String numRoom_raw = request.getParameter("numRoom");
         String id_raw = request.getParameter("id");
 
-        System.out.println(checkIn + " - " + checkOut);
-        
+        String[] skillIds = request.getParameterValues("svId");
+        List<Servicess> listService = new ArrayList<>();
+        if(skillIds != null && skillIds.length != 0) {
+            for (String skillId : skillIds) {
+                int serviceId = Integer.parseInt(skillId);
+                Servicess servicess = new ServiceDAO().getServiceById(serviceId);
+                listService.add(servicess);
+            }
+        }
         RoomDAO rdao = new RoomDAO();
         try {
             int id = Integer.parseInt(id_raw);
@@ -85,6 +96,7 @@ public class ConfirmBookingController extends HttpServlet {
         }
         
         request.setAttribute("checkIn", checkIn);
+        request.setAttribute("listService", listService);
         request.setAttribute("checkOut", checkOut);
         request.setAttribute("numPeople", numPeople);
         request.setAttribute("numRoom", numRoom_raw);

@@ -347,14 +347,12 @@
                                 <input type="hidden" name="id" value="${room.getRID()}">
                                 <div class="check-date">
                                     <label for="date-in">Check In:</label>
-                                    <input type="text" class="date-input" id="date-in" name="checkInDate" value="${checkInDate}" onchange="resetlink()" required>
-                                    <i class="icon_calendar"></i>
+                                    <input style="padding-right: 15px" type="date" id="date-in" name="checkInDate" value="${checkInDate}" onchange="resetlink()" required>
                                 </div>
                                 <span  id="msggg" style="color: red; display: none">Checkin Date must before Checkout Date</span>
                                 <div class="check-date">
                                     <label for="date-out">Check Out:</label>
-                                    <input type="text" class="date-input" id="date-out" name="checkOutDate" value="${checkOutDate}" onchange="resetlink()" required>
-                                    <i class="icon_calendar"></i>
+                                    <input style="padding-right: 15px" type="date"  id="date-out" name="checkOutDate" value="${checkOutDate}" onchange="resetlink()" required>
                                 </div>
                                 <div class="select-option">
                                     <label for="guest">Number People: </label>
