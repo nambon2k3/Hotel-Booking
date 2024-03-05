@@ -32,8 +32,8 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
-        
-        
+
+
     </head>
 
     <body>
@@ -125,7 +125,7 @@
                                         <ul>
                                             <c:if test="${sessionScope.User != null}">
                                                 <li><a href="profile">Profile</a></li>
-                                                 <li><a href="listbooked">Booked</a></li> 
+                                                <li><a href="listbooked">Booked</a></li> 
                                                 <li><a href="log">Logout</a></li>
                                                 </c:if>
                                                 <c:if test="${sessionScope.User eq null}">
@@ -191,6 +191,35 @@
                                 <span>Rooms</span>
                             </div>
                         </div>
+                        <div class="container mt-4">
+                            <form action="listroom">
+                                <div class="row mb-4">
+                                    <div class="col-md-3">
+                                        <label for="guest">Capacity:</label><br>
+                                        <select id="guest" name="Capacity" style="width: 150px; ">
+                                            <option value="2" ${Capacity eq 2 ? 'selected' : ''}>2 People</option>
+                                            <option value="3" ${Capacity eq 3 ? 'selected' : ''}>3 People</option>
+                                            <option value="4" ${Capacity eq 4 ? 'selected' : ''}>More than 3 People</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="capacityFilter">Check-in Date</label>
+                                        <input type="date" class="form-control" id="checkInDateFilter" name="checkInDate" value="${checkInDate}" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="capacityFilter">Check-out Date</label>
+                                        <input type="date" class="form-control" id="checkOutDateFilter" name="checkOutDate" value="${checkOutDate}" required>
+                                    </div>
+                                    <div class="col-md-3 d-flex justify-content-center">
+                                        <div>
+                                            <label class="d-block">&nbsp;</label>
+                                            <button type="submit" class="btn btn-primary btn-block ">Apply Filters</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -201,13 +230,18 @@
         <section class="rooms-section spad">
             <div class="container">
                 <div class="row">
+                    <c:if test="${roomList.size() == 0}">
+                        <div class="col-lg-12 text-center" style="font-size: 50px; height: 600px; color: #aaaab3">
+                            No suitable room
+                        </div>
+                    </c:if>
                     <c:forEach items="${requestScope.roomList}" var="room">
                         <div class="col-lg-4 col-md-6">
                             <div class="room-item">
                                 <img src="${room.getImg()}" alt="" style="aspect-ratio: 1.5/1">
                                 <div class="ri-text">
                                     <h4>${room.getName()}</h4>
-                                    <h3>${room.getPrice()}$<span>/Pernight</span></h3>
+                                    <h3>${String.format("%,.0f", room.getPrice())} VND<span>/Pernight</span></h3>
                                     <table>
                                         <tbody>
                                             <tr>
@@ -223,27 +257,31 @@
                                                 <td>${room.getBedSById().getBedName()}</td>
                                             </tr>
                                             <tr>
+                                                <td class="r-o">Room left: </td>
+                                                <td>${room.getTotalRoom()}</td>
+                                            </tr>
+                                            <tr>
                                                 <td class="r-o">Services:</td>
                                                 <td>${room.listServiceInString()}</td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <a href="roomdetail?id=${room.getRID()}" class="primary-btn">More Details</a>
+                                    <a href="roomdetail?id=${room.getRID()}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&Capacity=${Capacity}" class="primary-btn">More Details</a>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
                     <div class="col-lg-12">
                         <div class="room-pagination">
-                            <c:if test="${index ne 1}">
-                                <a href="listroom?index=${index -1}">Previous <i class="fa fa-long-arrow-left"></i></a>
-                            </c:if>
-                            <c:forEach begin="1" end="${requestScope.endPage}" var="page">
-                                <a href="listroom?index=${page}" ${page == index ? 'style="background-color: #DFA974; color: white"' : ''}>${page}</a>
+                            <c:if test="${index ne 1 && roomList.size() ne 0}">
+                                <a href="listroom?index=${index -1}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&Capacity=${Capacity}">Previous <i class="fa fa-long-arrow-left"></i></a>
+                                </c:if>
+                                <c:forEach begin="1" end="${requestScope.endPage}" var="page">
+                                <a href="listroom?index=${page}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&Capacity=${Capacity}" ${page == index ? 'style="background-color: #DFA974; color: white"' : ''}>${page}</a>
                             </c:forEach>
-                            <c:if test="${index ne endPage}">
-                                <a href="listroom?index=${index + 1}">Next <i class="fa fa-long-arrow-right"></i></a>
-                            </c:if>
+                            <c:if test="${index ne endPage && roomList.size() ne 0}">
+                                <a href="listroom?index=${index + 1}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&Capacity=${Capacity}">Next <i class="fa fa-long-arrow-right"></i></a>
+                                </c:if>
                         </div>
                     </div>
                 </div>
@@ -340,4 +378,26 @@
         <script src="js/main.js"></script>
     </body>
 
+    <script>
+            let inputCheckIn = document.getElementById('date-in');
+            let inputcheckOut = document.getElementById('date-out');
+            
+            const today = new Date();
+            const year = today.getFullYear();
+            let month = today.getMonth() + 1;
+            let day = today.getDate();
+
+            // Add leading zero for single-digit months and days
+            month = month < 10 ? '0' + month : month;
+            day = day < 10 ? '0' + day : day;
+            let date = year + '-' + month + '-' + day;
+
+            if(inputCheckIn.value === null && inputCheckIn.value === '') {
+                inputCheckIn.value = date;
+            }
+            if(inputcheckOut.value === null && inputcheckOut.value === '') {
+                inputCheckIn.value = date;
+            }
+        </script>
+    
 </html>

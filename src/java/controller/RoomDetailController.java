@@ -14,6 +14,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import model.Feedback;
 import model.Rooms;
@@ -61,17 +63,22 @@ public class RoomDetailController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
-        String checkIn = request.getParameter("checkIn");
-        String checkOut = request.getParameter("checkOut");
+        String checkInDate = request.getParameter("checkInDate");
+        String checkOutDate = request.getParameter("checkOutDate");
         String numPeople = request.getParameter("numPeople");
         String numRoom = request.getParameter("numRoom");
-        String status = request.getParameter("status");
-        System.out.println(status);
         //get the room id
         String id_raw = request.getParameter("id");
         
         //initial dao
         RoomDAO rdao = new RoomDAO();
+        
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        
+        if(checkInDate == null ||  checkInDate.isEmpty()) {
+            checkInDate = format.format(new Date());
+            checkOutDate = format.format(new Date());
+        }
         
         
         List<Feedback> listFeedback = new FeedbackDAO().getFeedbackByRoom(id_raw);
@@ -79,16 +86,15 @@ public class RoomDetailController extends HttpServlet {
         
         try {
             int id = Integer.parseInt(id_raw);
-            Rooms room = rdao.getRoomById(id);
+            Rooms room = rdao.getRoomById(id, checkInDate, checkOutDate, "0");
             request.setAttribute("room", room);
         } catch (Exception e) {
             System.out.println("RoomDetailController: " +e.getMessage());
         }
-        request.setAttribute("checkIn", checkIn);
-        request.setAttribute("checkOut", checkOut);
+        request.setAttribute("checkInDate", checkInDate);
+        request.setAttribute("checkOutDate", checkOutDate);
         request.setAttribute("numPeople", numPeople);
         request.setAttribute("numRoom", numRoom);
-        request.setAttribute("status", status);
         request.setAttribute("listFeedback", listFeedback);
         request.getRequestDispatcher("roomdetail.jsp").forward(request, response);
     } 

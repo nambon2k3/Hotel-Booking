@@ -47,25 +47,55 @@ public class RoomDAO extends DBContext {
         return roomList;
     }
 
-    public List<Rooms> getRoomsForPage(int pageNumber, int roomsPerPage) {
+    public List<Rooms> getRoomsForPage(int pageNumber, int roomsPerPage, String checkInDate, String checkOutDate, String Capacity) {
         List<Rooms> roomList = new ArrayList<>();
 
         try {
             int offset = (pageNumber - 1) * roomsPerPage;
 
-            String query = "SELECT * FROM Rooms "
+            String query = "SELECT \n"
+                    + "    r.[RID],\n"
+                    + "    r.[RoomName],\n"
+                    + "    r.[Size],\n"
+                    + "    r.[Img],\n"
+                    + "    r.[Status],\n"
+                    + "    r.[BID],\n"
+                    + "    r.[Details],\n"
+                    + "    r.[Capacity],\n"
+                    + "    r.[Price],\n"
+                    + "    r.[TotalRoom] - COALESCE(i.NumberRooms, 0) AS AvailableRooms\n"
+                    + "FROM \n"
+                    + "    [SWP_Hotel_Booking].[dbo].[Rooms] r\n"
+                    + "LEFT JOIN (\n"
+                    + "    SELECT \n"
+                    + "        [RoomID],\n"
+                    + "        SUM([NumberRooms]) AS NumberRooms\n"
+                    + "    FROM \n"
+                    + "        [SWP_Hotel_Booking].[dbo].[INVOICES]\n"
+                    + "    WHERE \n"
+                    + "        ([CheckInDate] < ? AND [CheckOutDate] > ?)\n"
+                    + "        AND [ReservationStatus] = 1\n"
+                    + "    GROUP BY \n"
+                    + "        [RoomID]\n"
+                    + ") i ON r.[RID] = i.[RoomID]\n"
+                    + "WHERE \n"
+                    + "    r.[Capacity] >= ?\n"
                     + "ORDER BY RID "
                     + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, offset);
-            preparedStatement.setInt(2, roomsPerPage);
+            preparedStatement.setString(1, checkInDate);
+            preparedStatement.setString(2, checkOutDate);
+            preparedStatement.setString(3, Capacity);
+            preparedStatement.setInt(4, offset);
+            preparedStatement.setInt(5, roomsPerPage);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Rooms room = new Rooms();
                 room.setRID(resultSet.getInt("RID"));
+                room.setTotalRoom(resultSet.getInt("AvailableRooms"));
                 room.setSize(resultSet.getInt("Size"));
                 room.setCapacity(resultSet.getInt("Capacity"));
                 room.setImg(resultSet.getString("Img"));
@@ -82,6 +112,43 @@ public class RoomDAO extends DBContext {
         }
 
         return roomList;
+    }
+
+    public int getTotalRoom(String checkInDate, String checkOutDate, String Capacity) {
+        String query = "SELECT \n"
+                + "    Count(*)\n"
+                + "FROM \n"
+                + "    [SWP_Hotel_Booking].[dbo].[Rooms] r\n"
+                + "LEFT JOIN (\n"
+                + "    SELECT \n"
+                + "        [RoomID],\n"
+                + "        SUM([NumberRooms]) AS NumberRooms\n"
+                + "    FROM \n"
+                + "        [SWP_Hotel_Booking].[dbo].[INVOICES]\n"
+                + "    WHERE \n"
+                + "        ([CheckInDate] < ? AND [CheckOutDate] > ?)\n"
+                + "        AND [ReservationStatus] = 1\n"
+                + "    GROUP BY \n"
+                + "        [RoomID]\n"
+                + ") i ON r.[RID] = i.[RoomID]\n"
+                + "WHERE \n"
+                + "    r.[Capacity] >= ?;";
+        try {
+            
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, checkInDate);
+            preparedStatement.setString(2, checkOutDate);
+            preparedStatement.setString(3, Capacity);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+            
+        } catch (Exception e) {
+            System.out.println("getTotalRoom: " + e.getMessage());
+        }
+        return 0;
     }
 
     public List<Rooms> getRoomsForPage(int pageNumber, int roomsPerPage, int userId) {
@@ -153,25 +220,6 @@ public class RoomDAO extends DBContext {
         return roomList;
     }
 
-    public int getNumberOfRooms() {
-        int numberOfRooms = 0;
-
-        try {
-            String query = "SELECT COUNT(*) AS TotalRooms FROM Rooms";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                numberOfRooms = resultSet.getInt("TotalRooms");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return numberOfRooms;
-    }
-
     public int getNumberOfRooms(int userId) {
         int numberOfRooms = 0;
 
@@ -192,19 +240,83 @@ public class RoomDAO extends DBContext {
         return numberOfRooms;
     }
 
-    public Rooms getRoomById(int roomId) {
+    public Rooms getRoomById(int roomId, String checkInDate, String checkOutDate, String Capacity) {
         Rooms room = null;
 
         try {
-            String query = "SELECT * FROM Rooms WHERE RID = ?";
+            String query = "SELECT \n"
+                    + "    r.[RID],\n"
+                    + "    r.[RoomName],\n"
+                    + "    r.[Size],\n"
+                    + "    r.[Img],\n"
+                    + "    r.[Status],\n"
+                    + "    r.[BID],\n"
+                    + "    r.[Details],\n"
+                    + "    r.[Capacity],\n"
+                    + "    r.[Price],\n"
+                    + "    r.[TotalRoom] - COALESCE(i.NumberRooms, 0) AS AvailableRooms\n"
+                    + "FROM \n"
+                    + "    [SWP_Hotel_Booking].[dbo].[Rooms] r\n"
+                    + "LEFT JOIN (\n"
+                    + "    SELECT \n"
+                    + "        [RoomID],\n"
+                    + "        SUM([NumberRooms]) AS NumberRooms\n"
+                    + "    FROM \n"
+                    + "        [SWP_Hotel_Booking].[dbo].[INVOICES]\n"
+                    + "    WHERE \n"
+                    + "        ([CheckInDate] < ? AND [CheckOutDate] > ?)\n"
+                    + "        AND [ReservationStatus] = 1\n"
+                    + "    GROUP BY \n"
+                    + "        [RoomID]\n"
+                    + ") i ON r.[RID] = i.[RoomID]\n"
+                    + "WHERE \n"
+                    + "    r.[Capacity] >= ? and  r.RID = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, roomId);
-
+            
+            preparedStatement.setString(1, checkInDate);
+            preparedStatement.setString(2, checkOutDate);
+            preparedStatement.setString(3, Capacity);
+            preparedStatement.setInt(4, roomId);
+            
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
                 room = new Rooms();
                 room.setRID(resultSet.getInt("RID"));
+                room.setTotalRoom(resultSet.getInt("AvailableRooms"));
+                room.setSize(resultSet.getInt("Size"));
+                room.setCapacity(resultSet.getInt("Capacity"));
+                room.setImg(resultSet.getString("Img"));
+                room.setStatus(resultSet.getInt("Status"));
+                room.setBID(resultSet.getInt("BID"));
+                room.setName(resultSet.getString("RoomName"));
+                room.setPrice(resultSet.getDouble("Price"));
+                room.setDetail(resultSet.getString("Details"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("getRoomById: " + e.getMessage());
+        }
+
+        return room;
+    }
+    
+    public Rooms getRoomById(int roomId) {
+        Rooms room = null;
+
+        try {
+            String query = "SELECT * From [Rooms] WHERE RID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            
+
+            preparedStatement.setInt(1, roomId);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                room = new Rooms();
+                room.setRID(resultSet.getInt("RID"));
+                room.setTotalRoom(resultSet.getInt("totalRoom"));
                 room.setSize(resultSet.getInt("Size"));
                 room.setCapacity(resultSet.getInt("Capacity"));
                 room.setImg(resultSet.getString("Img"));
@@ -222,41 +334,48 @@ public class RoomDAO extends DBContext {
         return room;
     }
 
-    public int checkAvailable(int roomId, int required) {
+    public int checkAvailable(int roomId, int required, String checkInDate, String checkOutDate) {
         Rooms room = null;
 
         try {
-            String query = "SELECT [RID]\n"
-                    + "      ,[Size]\n"
-                    + "      ,[Capacity]\n"
-                    + "      ,[Img]\n"
-                    + "      ,[Status]\n"
-                    + "      ,[BID]\n"
-                    + "      ,[RoomName]\n"
-                    + "      ,[Price]\n"
-                    + "      ,[Details]\n"
-                    + "      ,CASE\n"
-                    + "			WHEN [RID] =r2.RoomID THEN R.TotalRoom - r2.total\n"
-                    + "			ELSE R.TotalRoom\n"
-                    + "		END as RoomLeft\n"
-                    + "from Rooms R LEFT JOIN (SELECT RoomID, count(RoomID) as total from INVOICES\n"
-                    + "where GETDATE() < CheckOutDate\n"
-                    + "group by RoomID) r2\n"
-                    + "on r.RID = r2.RoomID\n"
-                    + "Where R.RID = ?";
+            String query = "SELECT \n"
+                    + "    r.[RID],\n"
+                    + "    r.[RoomName],\n"
+                    + "    r.[Size],\n"
+                    + "    r.[Capacity],\n"
+                    + "    r.[Price],\n"
+                    + "    r.[TotalRoom] - COALESCE(i.NumberRooms, 0) AS AvailableRooms\n"
+                    + "FROM \n"
+                    + "    [SWP_Hotel_Booking].[dbo].[Rooms] r\n"
+                    + "LEFT JOIN (\n"
+                    + "    SELECT \n"
+                    + "        [RoomID],\n"
+                    + "        SUM([NumberRooms]) AS NumberRooms\n"
+                    + "    FROM \n"
+                    + "        [SWP_Hotel_Booking].[dbo].[INVOICES]\n"
+                    + "    WHERE \n"
+                    + "        ([CheckInDate] < ? AND [CheckOutDate] > ?)\n"
+                    + "        AND [ReservationStatus] = 1\n"
+                    + "    GROUP BY \n"
+                    + "        [RoomID]\n"
+                    + ") i ON r.[RID] = i.[RoomID]\n"
+                    + "WHERE \n"
+                    + "    r.[Capacity] >= @capacity; and r.[RID] = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, roomId);
+            preparedStatement.setString(1, checkInDate);
+            preparedStatement.setString(2, checkOutDate);
+            preparedStatement.setInt(3, roomId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                int total = resultSet.getInt("RoomLeft");
+                int total = resultSet.getInt("AvailableRooms");
                 return total;
 
             }
 
         } catch (SQLException e) {
-            System.out.println("getRoomById: " + e.getMessage());
+            System.out.println("checkAvailable: " + e.getMessage());
         }
 
         return -1;
