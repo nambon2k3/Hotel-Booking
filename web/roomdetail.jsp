@@ -303,7 +303,9 @@
                                         </tr>
                                         <tr>
                                             <td class="r-o">Services:</td>
-                                            <td>${room.listServiceInString()}</td>
+                                            <td>
+                                                ${room.listServiceInString()}
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -347,9 +349,8 @@
                                     <label for="date-in">Check In:</label>
                                     <input type="text" class="date-input" id="date-in" name="checkInDate" value="${checkInDate}" onchange="resetlink()" required>
                                     <i class="icon_calendar"></i>
-                                    
                                 </div>
-                                    <span  id="msggg" style="color: red; display: none">Checkin Date must before Checkout Date</span>
+                                <span  id="msggg" style="color: red; display: none">Checkin Date must before Checkout Date</span>
                                 <div class="check-date">
                                     <label for="date-out">Check Out:</label>
                                     <input type="text" class="date-input" id="date-out" name="checkOutDate" value="${checkOutDate}" onchange="resetlink()" required>
@@ -368,6 +369,18 @@
                                     <label for="room">Number Room: (${room.getTotalRoom() } remaining)</label>
                                     <input id="room" style="color: #19191a" type="text" placeholder="Number of rooms" name="numRoom" value="1" onchange="resetlink()" required>
                                 </div>
+                                <div>
+                                    <label>Choose Service:  </label> 
+                                    <div>
+                                        <c:forEach items="${room.getListServiceByRoomId()}" var="sv">
+                                            <div style="background-color: #e5e5e5; padding: 5px; margin-bottom: 20px; display: inline-block;">
+                                                <span>${sv.getServiceName()}</span> 
+                                                <input class="sevices" type="checkbox" name="svId" value="${sv.getSeID()}" onclick="resetlink()">
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+
                                 <a id="btnnn" href="confirmbooking?id=${room.getRID()}&checkIn=${checkInDate}&checkOut=${checkOutDate}&numPeople=0&numRoom_raw=3}" class="btn btn-primary">Book now</a>
                                 <button type="submit" class="btn btn-primary">Update information</button>
                             </form>
@@ -390,15 +403,24 @@
                 let link = document.getElementById('btnnn');
                 let numberRoom = document.getElementById('room');
                 let numberPeople = document.getElementById('guest');
-                link.href = 'confirmbooking?id=${room.getRID()}&checkIn=' + inputCheckIn.value +'&checkOut=' + inputcheckOut.value +'&numPeople=' + numberPeople.value + '&numRoom=' + numberRoom.value;
-                if(inputCheckIn.value > inputcheckOut.value) {
+                
+                let listServices = document.getElementsByClassName('sevices');
+                let urlService = '';
+                for (var i = 0; i < listServices.length; i++) {
+                    if(listServices[i].checked) {
+                        urlService += '&svId=' + listServices[i].value; 
+                    }
+                }
+                
+                link.href = 'confirmbooking?id=${room.getRID()}&checkIn=' + inputCheckIn.value + '&checkOut=' + inputcheckOut.value + '&numPeople=' + numberPeople.value + '&numRoom=' + numberRoom.value + urlService;
+                if (inputCheckIn.value > inputcheckOut.value) {
                     link.href = '#';
                     msggg.style.display = 'inline';
                 } else {
                     msggg.style.display = 'none';
                 }
-                    
-                    
+
+
             }
         </script>
 

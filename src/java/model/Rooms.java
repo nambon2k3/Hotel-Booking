@@ -144,6 +144,9 @@ public class Rooms {
         return listServiceString;
     }
     
+    
+    
+    
     public boolean checkFeedback(int userId) {
         return new FeedbackDAO().getFeedbackByRoomAndUser(RID + "", userId) == null;
     }
