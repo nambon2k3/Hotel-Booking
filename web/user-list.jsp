@@ -39,7 +39,6 @@
                 <thead>
                     <tr>
                         <th>User ID</th>
-                        <th>Role</th>
                         <th>Full Name</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -52,7 +51,6 @@
                     <c:forEach var="user" items="${userList}">
                         <tr>
                             <td>${user.userId}</td>
-                            <td>${user.role=="0" ? "User" : "Admin"}</td>
                             <td>${user.fullName}</td>
                             <td>${user.email}</td>
                             <td>${user.phone}</td>
@@ -115,6 +113,7 @@
                                             <select class="form-control" name="role" required>
                                                 <option value="1" ${user.role == 1 ? 'selected' : ''}>Admin</option>
                                                 <option value="0" ${user.role == 0 ? 'selected' : ''}>User</option>
+                                                <option value="2" ${user.role == 2 ? 'selected' : ''}>Receptionist</option>
                                             </select>
                                         </div>
 
