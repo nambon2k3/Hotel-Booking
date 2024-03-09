@@ -77,6 +77,7 @@ public class InvoicesDAO extends DAL.DBContext {
 
             while (resultSet.next()) {
                 Invoices invoice = new Invoices();
+                invoice.setInID(resultSet.getInt("InID"));
                 invoice.setUserID(resultSet.getInt("UserID"));
                 invoice.setRoomID(resultSet.getInt("RoomID"));
                 invoice.setCheckInDate(resultSet.getDate("CheckInDate"));
@@ -106,16 +107,17 @@ public class InvoicesDAO extends DAL.DBContext {
             }
             sql = sql.substring(0, sql.length() - 1);
             System.out.println(sql);
+        } else {
+            return;
         }
-        else return;
         try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("insertDetail: " + ex.getMessage());
         }
-        
+
     }
-    
+
     public int getInvoiceByTransactionCode(String transactionCode) {
         String sql = "select [InID] from INVOICES where transactionCode = ?";
         try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -129,6 +131,22 @@ public class InvoicesDAO extends DAL.DBContext {
             System.out.println("getInvoiceByTransactionCode: " + ex.getMessage());
         }
         return -1;
+    }
+
+    public boolean updateInvoiceStatusById(int invoiceId, int status) {
+        String updateQuery = "UPDATE INVOICES SET ReservationStatus = ? WHERE InID = ?";
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setInt(1, status);
+            preparedStatement.setInt(2, invoiceId);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.out.println("updateInvoiceStatusById: " + e.getMessage());
+            return false;
+        }
     }
 
 }
