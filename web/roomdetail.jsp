@@ -388,8 +388,32 @@
             </div>
         </section>
         <!-- Room Details Section End -->
-
+        
         <script>
+            function updateCheckOutDateMin() {
+                // Get the selected checkInDate value
+                var checkInDate = document.getElementById('date-in').value;
+
+                // Set the minimum checkOutDate value to checkInDate
+                var checkOutDate = document.getElementById('date-out');
+                checkOutDate.min = checkInDate;
+                if (checkOutDate.value < checkInDate) {
+                    checkOutDate.value = checkInDate;
+                }
+            }
+            
+            function updateCheckInDateMax() {
+                // Get the selected checkInDate value
+                var  checkOutDate= document.getElementById('date-out').value;
+
+                // Set the minimum checkOutDate value to checkInDate
+                var checkInDate = document.getElementById('date-in');
+                checkInDate.max = checkInDate;
+                if (checkInDate.value > checkOutDate) {
+                    checkInDate.value = checkOutDate;
+                }
+            }
+            
             let link = document.getElementById('btnnn');
             let numberRoom = document.getElementById('room');
             let numberPeople = document.getElementById('guest');
@@ -401,15 +425,15 @@
                 let link = document.getElementById('btnnn');
                 let numberRoom = document.getElementById('room');
                 let numberPeople = document.getElementById('guest');
-                
+
                 let listServices = document.getElementsByClassName('sevices');
                 let urlService = '';
                 for (var i = 0; i < listServices.length; i++) {
-                    if(listServices[i].checked) {
-                        urlService += '&svId=' + listServices[i].value; 
+                    if (listServices[i].checked) {
+                        urlService += '&svId=' + listServices[i].value;
                     }
                 }
-                
+
                 link.href = 'confirmbooking?id=${room.getRID()}&checkIn=' + inputCheckIn.value + '&checkOut=' + inputcheckOut.value + '&numPeople=' + numberPeople.value + '&numRoom=' + numberRoom.value + urlService;
                 if (inputCheckIn.value > inputcheckOut.value) {
                     link.href = '#';
@@ -418,7 +442,8 @@
                     msggg.style.display = 'none';
                 }
 
-
+                updateCheckOutDateMin();
+                updateCheckInDateMax();
             }
         </script>
 
@@ -589,6 +614,26 @@
             </div>
         </c:if>
 
+
+        <script>
+            let inputCheckIn = document.getElementById('date-in');
+            let inputcheckOut = document.getElementById('date-out');
+
+            const today = new Date();
+            const year = today.getFullYear();
+            let month = today.getMonth() + 1;
+            let day = today.getDate();
+
+            // Add leading zero for single-digit months and days
+            month = month < 10 ? '0' + month : month;
+            day = day < 10 ? '0' + day : day;
+            let date = year + '-' + month + '-' + day;
+
+            inputCheckIn.min = date;
+            inputcheckOut.min = date;
+        </script>
+        
+        
 
 
         <!-- bootstrap link -->

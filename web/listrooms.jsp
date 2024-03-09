@@ -204,11 +204,11 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label for="capacityFilter">Check-in Date</label>
-                                        <input type="date" class="form-control" id="checkInDateFilter" name="checkInDate" value="${checkInDate}" required>
+                                        <input type="date" class="form-control" id="checkInDateFilter" name="checkInDate" onchange="updateCheckOutDateMin()" value="${checkInDate}" required>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="capacityFilter">Check-out Date</label>
-                                        <input type="date" class="form-control" id="checkOutDateFilter" name="checkOutDate" value="${checkOutDate}" required>
+                                        <input type="date" class="form-control" id="checkOutDateFilter" name="checkOutDate" onchange="updateCheckInDateMax()" value="${checkOutDate}" required>
                                     </div>
                                     <div class="col-md-3 d-flex justify-content-center">
                                         <div>
@@ -379,8 +379,8 @@
     </body>
 
     <script>
-            let inputCheckIn = document.getElementById('date-in');
-            let inputcheckOut = document.getElementById('date-out');
+            let inputCheckIn = document.getElementById('checkInDateFilter');
+            let inputcheckOut = document.getElementById('checkOutDateFilter');
             
             const today = new Date();
             const year = today.getFullYear();
@@ -391,12 +391,41 @@
             month = month < 10 ? '0' + month : month;
             day = day < 10 ? '0' + day : day;
             let date = year + '-' + month + '-' + day;
-
+            inputCheckIn.min = date;
+            inputCheckIn.min = date;
             if(inputCheckIn.value === null && inputCheckIn.value === '') {
                 inputCheckIn.value = date;
+                
             }
             if(inputcheckOut.value === null && inputcheckOut.value === '') {
                 inputCheckIn.value = date;
+                
+            }
+        </script>
+        
+        <script>
+            function updateCheckOutDateMin() {
+                // Get the selected checkInDate value
+                var checkInDate = document.getElementById('checkInDateFilter').value;
+
+                // Set the minimum checkOutDate value to checkInDate
+                var checkOutDate = document.getElementById('checkOutDateFilter');
+                checkOutDate.min = checkInDate;
+                if (checkOutDate.value < checkInDate) {
+                    checkOutDate.value = checkInDate;
+                }
+            }
+            
+            function updateCheckInDateMax() {
+                // Get the selected checkInDate value
+                var  checkOutDate= document.getElementById('checkOutDateFilter').value;
+
+                // Set the minimum checkOutDate value to checkInDate
+                var checkInDate = document.getElementById('checkInDateFilter');
+                checkInDate.max = checkInDate;
+                if (checkInDate.value > checkOutDate) {
+                    checkInDate.value = checkOutDate;
+                }
             }
         </script>
     
