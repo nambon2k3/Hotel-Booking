@@ -301,12 +301,6 @@
                                             <td class="r-o">Bed:</td>
                                             <td>${room.getBedSById().getBedName()}</td>
                                         </tr>
-                                        <tr>
-                                            <td class="r-o">Services:</td>
-                                            <td>
-                                                ${room.listServiceInString()}
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                                 <p class="f-para">

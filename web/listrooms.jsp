@@ -156,15 +156,6 @@
                                         <li><a href="home">Home</a></li>
                                         <li class="active"><a href="listroom">Rooms</a></li>
                                         <li><a href="./about-us.jsp">About Us</a></li>
-                                        <li><a href="./pages.html">Pages</a>
-                                            <ul class="dropdown">
-                                                <li><a href="./room-details.html">Room Details</a></li>
-                                                <li><a href="./blog-details.html">Blog Details</a></li>
-                                                <li><a href="#">Family Room</a></li>
-                                                <li><a href="#">Premium Room</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="./blog.html">News</a></li>
                                         <li><a href="./contact.jsp">Contact</a></li>
                                     </ul>
                                 </nav>
