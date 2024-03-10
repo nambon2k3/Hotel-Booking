@@ -4,6 +4,8 @@
  */
 package model;
 
+import dao.RoomDAO;
+import dao.UserDAO;
 import java.util.Date;
 
 /**
@@ -32,8 +34,6 @@ public class Invoices {
         this.transactionCode = transactionCode;
     }
 
-    
-    
     public int getInID() {
         return InID;
     }
@@ -104,6 +104,14 @@ public class Invoices {
 
     public void setNote(String note) {
         this.note = note;
+    }
+    
+    public User getUser() {
+        return new UserDAO().readUserById(UserID);
+    }
+    
+    public Rooms getRoom() {
+        return new RoomDAO().getRoomById(RoomID);
     }
 
     @Override

@@ -129,9 +129,9 @@ public class LogController extends HttpServlet {
             return;
         }
 
-        if (userDB.getRole() != 1)
+        if (userDB.getRole() == 0)
             response.sendRedirect("home");
-        else response.sendRedirect("user");
+        else response.sendRedirect("invoice");
     }
 
     private void setCookieTimeOut(ArrayList<Cookie> listCookie, HttpServletResponse response, int timeExist) {
