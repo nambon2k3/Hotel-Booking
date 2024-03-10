@@ -73,7 +73,7 @@ public class RoomDAO extends DBContext {
                     + "    FROM \n"
                     + "        [SWP_Hotel_Booking].[dbo].[INVOICES]\n"
                     + "    WHERE \n"
-                    + "        ([CheckInDate] < ? AND [CheckOutDate] > ?)\n"
+                    + "        ([CheckInDate] <= ? AND [CheckOutDate] => ?)\n"
                     + "        AND [ReservationStatus] = 1\n"
                     + "    GROUP BY \n"
                     + "        [RoomID]\n"
