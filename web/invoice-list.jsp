@@ -58,7 +58,7 @@
                             <td>${invoice.checkInDate}</td>
                             <td>${invoice.checkOutDate}</td>
                             <td>${invoice.numberPerson}</td>
-                            <td>${invoice.reservationStatus}</td>
+                            <td>${invoice.reservationStatus == 1 ? 'Pending' : 'Success'}</td>
                             <td>
                                 <c:if test="${invoice.reservationStatus == 1}">
                                     <a href="invoice?action=update&id=${invoice.inID}">Accept</a>
