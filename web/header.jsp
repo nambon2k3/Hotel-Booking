@@ -21,9 +21,12 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="user">User Management</a>
-                <a class="dropdown-item" href="room">Room Management</a>
-                <a class="dropdown-item" href="service">Service Management</a>
+                <c:if test="${not empty sessionScope.User && sessionScope.User.role eq 1}">
+                    <a class="dropdown-item" href="user">User Management</a>
+                    <a class="dropdown-item" href="room">Room Management</a>
+                    <a class="dropdown-item" href="service">Service Management</a>
+                </c:if>
+
                 <a class="dropdown-item" href="invoice">Invoice Management</a>
                 <a class="dropdown-item" href="chat?action=support">Chat Support</a>
             </div>

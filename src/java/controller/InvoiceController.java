@@ -5,6 +5,9 @@
 package controller;
 
 import dao.InvoicesDAO;
+import dao.RoomDAO;
+import dao.ServiceDAO;
+import dao.UserDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -60,15 +63,18 @@ public class InvoiceController extends HttpServlet {
             throws ServletException, IOException {
         List<Invoices> invoiceList = invoicesDAO.getAllInvoices();
         request.setAttribute("invoicesList", invoiceList);
+        request.setAttribute("listUser", new UserDAO().readAllUsers());
+        request.setAttribute("listRoom", new RoomDAO().getAllRooms());
+        request.setAttribute("listService", new ServiceDAO().getServices());
         request.getRequestDispatcher("invoice-list.jsp").forward(request, response);
     }
 
     private void updateInvoiceStatus(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String transactionCode = request.getParameter("transactionCode");
+        String id = request.getParameter("id");
 
-        if (transactionCode != null && !transactionCode.isEmpty()) {
-            boolean updated = invoicesDAO.updateInvoiceStatusByTransactionCode(transactionCode);
+        if (id != null && !id.isEmpty()) {
+            boolean updated = invoicesDAO.updateInvoiceStatusById(Integer.parseInt(id), 0);
 
             if (updated) {
                 response.sendRedirect("invoice?action=list&success");
