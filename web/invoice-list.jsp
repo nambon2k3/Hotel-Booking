@@ -53,8 +53,8 @@
                     <c:forEach var="invoice" items="${invoicesList}">
                         <tr>
                             <td>${invoice.inID}</td>
-                            <td>${invoice.userID}</td>
-                            <td>${invoice.roomID}</td>
+                            <td>${invoice.user.fullName}</td>
+                            <td>${invoice.room.name}</td>
                             <td>${invoice.checkInDate}</td>
                             <td>${invoice.checkOutDate}</td>
                             <td>${invoice.numberPerson}</td>
