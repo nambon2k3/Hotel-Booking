@@ -224,16 +224,7 @@
                                     <ul>
                                         <li><a href="home">Home</a></li>
                                         <li class="active"><a href="listroom">Rooms</a></li>
-                                        <li><a href="./about-us.html">About Us</a></li>
-                                        <li><a href="./pages.html">Pages</a>
-                                            <ul class="dropdown">
-                                                <li><a href="./room-details.html">Room Details</a></li>
-                                                <li><a href="./blog-details.html">Blog Details</a></li>
-                                                <li><a href="#">Family Room</a></li>
-                                                <li><a href="#">Premium Room</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="./blog.html">News</a></li>
+                                        <li><a href="./about-us.jsp">About Us</a></li>
                                         <li><a href="./contact.jsp">Contact</a></li>
                                     </ul>
                                 </nav>
@@ -343,7 +334,6 @@
                                     <label for="date-in">Check In:</label>
                                     <input style="padding-right: 15px" type="date" id="date-in" name="checkInDate" value="${checkInDate}" onchange="resetlink()" required>
                                 </div>
-                                <span  id="msggg" style="color: red; display: none">Checkin Date must before Checkout Date</span>
                                 <div class="check-date">
                                     <label for="date-out">Check Out:</label>
                                     <input style="padding-right: 15px" type="date"  id="date-out" name="checkOutDate" value="${checkOutDate}" onchange="resetlink()" required>

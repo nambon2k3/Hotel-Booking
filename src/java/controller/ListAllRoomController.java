@@ -91,6 +91,9 @@ public class ListAllRoomController extends HttpServlet {
         
         //Get room by paging
         List<Rooms> roomList = rdao.getRoomsForPage(index, 6, checkInDate, checkOutDate, Capacity);
+        for (Rooms rooms : roomList) {
+            System.out.println(rooms);
+        }
         
         //get end page
         int totalRoom = rdao.getTotalRoom(checkInDate, checkOutDate, Capacity);

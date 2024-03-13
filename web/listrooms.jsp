@@ -383,7 +383,7 @@
             day = day < 10 ? '0' + day : day;
             let date = year + '-' + month + '-' + day;
             inputCheckIn.min = date;
-            inputCheckIn.min = date;
+            inputcheckOut.min = date;
             if(inputCheckIn.value === null && inputCheckIn.value === '') {
                 inputCheckIn.value = date;
                 
