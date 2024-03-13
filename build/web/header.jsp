@@ -29,6 +29,7 @@
 
                 <a class="dropdown-item" href="invoice">Invoice Management</a>
                 <a class="dropdown-item" href="chat?action=support">Chat Support</a>
+                <a class="dropdown-item" href="stat.jsp">Revenue</a>
             </div>
         </div>
 

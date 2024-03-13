@@ -181,13 +181,13 @@
                                 <input type="date" class="form-control" name="dob" required>
                             </div>
 
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label for="role">Role:</label>
                                 <select class="form-control" name="role" required>
                                     <option value="0">User</option>
                                     <option value="1">Admin</option>
                                 </select>
-                            </div>
+                            </div>-->
 
                             <button type="submit" class="btn btn-primary">Create User</button>
                         </form>
