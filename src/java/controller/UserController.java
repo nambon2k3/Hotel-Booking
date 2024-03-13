@@ -80,7 +80,7 @@ public class UserController extends HttpServlet {
 
     private void createUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String role = request.getParameter("role");
+//        String role = request.getParameter("role");
         String phonenumber = request.getParameter("phonenumber");
         String password = request.getParameter("password");
         String fullName = request.getParameter("fullName");
@@ -90,7 +90,7 @@ public class UserController extends HttpServlet {
 
         // Perform any validation if needed
 
-        int userId = userDAO.createUser(role, phonenumber, password, fullName, email, gender, dob);
+        int userId = userDAO.createUser("2", phonenumber, password, fullName, email, gender, dob);
 
         if (userId > 0) {
             response.sendRedirect("user?action=list&success");
