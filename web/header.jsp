@@ -35,6 +35,9 @@
                     <a class="dropdown-item" href="stat.jsp">Revenue</a>
                 </div>
             </c:if>
+            <c:if test="${not empty sessionScope.User && sessionScope.User.role eq 0}">
+                <a class="nav-link text-light" href="chat">Chat Support</a>
+            </c:if>
 
         </div>
 
