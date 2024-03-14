@@ -15,12 +15,11 @@ public class FeedbackDAO extends DBContext {
     // Create a new feedback
     public void createFeedback(Feedback feedback) {
         try ( PreparedStatement preparedStatement = connection.prepareStatement(
-                "INSERT INTO feedback (userId, roomId, rating, content, createdDate) VALUES (?, ?, ?, ?, ?)")) {
+                "INSERT INTO feedback (userId, roomId, rating, content, createdDate) VALUES (?, ?, ?, ?, GETDATE())")) {
             preparedStatement.setInt(1, feedback.getUserId());
             preparedStatement.setInt(2, feedback.getRoomId());
             preparedStatement.setInt(3, feedback.getRating());
             preparedStatement.setString(4, feedback.getContent());
-            preparedStatement.setDate(5, new java.sql.Date(feedback.getCreatedDate().getTime()));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("createFeedback: " + e.getMessage());

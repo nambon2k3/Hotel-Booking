@@ -85,7 +85,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="icon">Icon:</label>
+                                            <label for="icon">Image:</label>
                                             <input type="text" class="form-control" name="icon" value="${service.icon}" required>
                                         </div>
 
@@ -132,7 +132,7 @@
                                 </div>
 
                                 <div class="form-group" style="display: none">
-                                    <label for="icon">Icon:</label>
+                                    <label for="icon">Image:</label>
                                     <input type="text" class="form-control" name="icon">
                                 </div>
 

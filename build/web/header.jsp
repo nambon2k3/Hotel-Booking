@@ -16,21 +16,26 @@
         </button>
 
         <div class="dropdown show text-light">
-            <a class="text-light text-decoration-none dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                System Management
-            </a>
+            <c:if test="${not empty sessionScope.User && sessionScope.User.role ne 0}">
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <c:if test="${not empty sessionScope.User && sessionScope.User.role eq 1}">
-                    <a class="dropdown-item" href="user">User Management</a>
-                    <a class="dropdown-item" href="room">Room Management</a>
-                    <a class="dropdown-item" href="service">Service Management</a>
-                </c:if>
+                <a class="text-light text-decoration-none dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    System Management
+                </a>
 
-                <a class="dropdown-item" href="invoice">Invoice Management</a>
-                <a class="dropdown-item" href="chat?action=support">Chat Support</a>
-                <a class="dropdown-item" href="stat.jsp">Revenue</a>
-            </div>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <c:if test="${not empty sessionScope.User && sessionScope.User.role eq 1}">
+                        <a class="dropdown-item" href="user">User Management</a>
+                        <a class="dropdown-item" href="room">Room Management</a>
+                        <a class="dropdown-item" href="service">Service Management</a>
+                    </c:if>
+
+                    <a class="dropdown-item" href="invoice">Invoice Management</a>
+                    <a class="dropdown-item" href="chat?action=support">Chat Support</a>
+                    <a class="dropdown-item" href="stat.jsp">Revenue</a>
+                </div>
+            </c:if>
+
         </div>
 
         <div class="collapse navbar-collapse" id="navbarNav">
