@@ -349,7 +349,7 @@
                                 </div>
                                 <div class="select-option">
                                     <label for="room">Number Room: (${room.getTotalRoom() } remaining)</label>
-                                    <input id="room" style="color: #19191a" type="text" placeholder="Number of rooms" name="numRoom" value="1" onchange="resetlink()" required>
+                                    <input id="room" style="color: #19191a" type="text" placeholder="Number of rooms" name="numRoom" value="1" onchange="resetlink()" oninput="valid()" required>
                                 </div>
                                 <div>
                                     <label>Choose Service:  </label> 
@@ -417,7 +417,6 @@
                         urlService += '&svId=' + listServices[i].value;
                     }
                 }
-
                 link.href = 'confirmbooking?id=${room.getRID()}&checkIn=' + inputCheckIn.value + '&checkOut=' + inputcheckOut.value + '&numPeople=' + numberPeople.value + '&numRoom=' + numberRoom.value + urlService;
                 if (inputCheckIn.value > inputcheckOut.value) {
                     link.href = '#';
@@ -428,6 +427,16 @@
 
                 updateCheckOutDateMin();
                 updateCheckInDateMax();
+            }
+            
+            function valid() {
+                let numberRoom = document.getElementById('room');
+                console.log(numberRoom.value);
+
+                if(numberRoom.value > ${room.getTotalRoom()}) {
+                    numberRoom.value = ${room.getTotalRoom()};
+                }
+                resetlink();
             }
         </script>
 
