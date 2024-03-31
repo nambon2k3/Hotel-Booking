@@ -16,6 +16,8 @@ import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
+import model.Invoices;
 import util.PasswordUtil;
 import util.Validation;
 
@@ -129,8 +131,12 @@ public class LogController extends HttpServlet {
             return;
         }
 
-        if (userDB.getRole() == 0)
+        if (userDB.getRole() == 0){
             response.sendRedirect("home");
+            List<Invoices> roomCart = new ArrayList<>();
+            session.setAttribute("roomCart", roomCart);
+        }
+            
         else response.sendRedirect("invoice");
     }
 

@@ -6,7 +6,9 @@ package model;
 
 import dao.RoomDAO;
 import dao.UserDAO;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -23,12 +25,34 @@ public class Invoices {
     private int numberRoom;
     private String note;
     private String transactionCode;
+    
+    private double total;
+    private List<Servicess> listService;
 
     // Constructors, getters, setters, and other methods
 
+    public List<Servicess> getListService() {
+        return listService;
+    }
+
+    public void setListService(List<Servicess> listService) {
+        this.listService = listService;
+    }
+
+    
+    
     public String getTransactionCode() {
         return transactionCode;
     }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+    
 
     public void setTransactionCode(String transactionCode) {
         this.transactionCode = transactionCode;
@@ -58,16 +82,16 @@ public class Invoices {
         RoomID = roomID;
     }
 
-    public Date getCheckInDate() {
-        return CheckInDate;
+    public String getCheckInDate() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(CheckInDate);
     }
 
     public void setCheckInDate(Date checkInDate) {
         CheckInDate = checkInDate;
     }
 
-    public Date getCheckOutDate() {
-        return CheckOutDate;
+    public String getCheckOutDate() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(CheckOutDate);
     }
 
     public void setCheckOutDate(Date checkOutDate) {

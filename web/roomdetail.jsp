@@ -195,6 +195,7 @@
                                             <c:if test="${sessionScope.User != null}">
                                                 <li><a href="profile">Profile</a></li>
                                                 <li><a href="listbooked">Booked</a></li> 
+                                                <li><a href="cart">Cart</a></li> 
                                                 <li><a href="log">Logout</a></li>
                                                 </c:if>
                                                 <c:if test="${sessionScope.User eq null}">
@@ -365,6 +366,9 @@
 
                                 <a id="btnnn" href="confirmbooking?id=${room.getRID()}&checkIn=${checkInDate}&checkOut=${checkOutDate}&numPeople=0&numRoom_raw=3}" class="btn btn-primary">Book now</a>
                                 <button type="submit" class="btn btn-primary">Update information</button>
+                                <c:if test="${sessionScope.User ne null}">
+                                    <button type="button" class="btn btn-primary" onclick="addToCart()">Add to cart</button>
+                                </c:if>
                             </form>
                         </div>
                     </div>
@@ -372,6 +376,26 @@
             </div>
         </section>
         <!-- Room Details Section End -->
+        
+        <script>
+            function addToCart() { 
+                let inputCheckIn = document.getElementById('date-in');
+                let inputcheckOut = document.getElementById('date-out');
+                let numberRoom = document.getElementById('room');
+                let numberPeople = document.getElementById('guest');
+                
+                let listServices = document.getElementsByClassName('sevices');
+                let urlService = '';
+                for (var i = 0; i < listServices.length; i++) {
+                    if (listServices[i].checked) {
+                        urlService += '&svId=' + listServices[i].value;
+                    }
+                }
+                
+                fetch('./addcart?id=${room.getRID()}&checkIn=' + inputCheckIn.value + '&checkOut=' + inputcheckOut.value + '&numPeople=' + numberPeople.value + '&numRoom=' + numberRoom.value + urlService);
+                window.alert('Add Ngon!');
+            }
+        </script>
         
         <script>
             function updateCheckOutDateMin() {

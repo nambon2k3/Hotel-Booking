@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Invoices;
+import model.Servicess;
 
 /**
  *
@@ -26,12 +27,11 @@ public class InvoicesDAO extends DAL.DBContext {
                 + "NumberPerson, NumberRooms, Note, transactionCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try ( PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             // Set values for the parameters using the Invoice object
             preparedStatement.setInt(1, invoice.getUserID());
             preparedStatement.setInt(2, invoice.getRoomID());
-            preparedStatement.setString(3, format.format(invoice.getCheckInDate()));
-            preparedStatement.setString(4, format.format(invoice.getCheckOutDate()));
+            preparedStatement.setString(3, invoice.getCheckInDate());
+            preparedStatement.setString(4, invoice.getCheckOutDate());
             preparedStatement.setInt(5, 0);
             preparedStatement.setInt(6, invoice.getNumberPerson());
             preparedStatement.setInt(7, invoice.getNumberRoom());
@@ -114,6 +114,27 @@ public class InvoicesDAO extends DAL.DBContext {
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("insertDetail: " + ex.getMessage());
+        }
+
+    }
+    
+    public void insertDetail(List<Servicess> listServices, String transactionCode, int index) {
+        String sql = "Insert into InvoiceDetails values ";
+        if (listServices != null && !listServices.isEmpty()) {
+            int inId = this.getInvoiceByTransactionCode(transactionCode) + index;
+            System.out.println(inId);
+            for (Servicess services : listServices) {
+                sql += "(" + inId + "," + services.getSeID() + "),";
+            }
+            sql = sql.substring(0, sql.length() - 1);
+            System.out.println(sql);
+        } else {
+            return;
+        }
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("insertDetail2: " + ex.getMessage());
         }
 
     }

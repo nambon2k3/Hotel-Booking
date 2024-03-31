@@ -13,8 +13,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import model.Invoices;
 import model.Rooms;
 import model.Servicess;
 import model.User;
@@ -23,8 +25,8 @@ import model.User;
  *
  * @author Admin
  */
-@WebServlet(name = "ConfirmBookingController", urlPatterns = {"/confirmbooking"})
-public class ConfirmBookingController extends HttpServlet {
+@WebServlet(name = "AddToCartController", urlPatterns = {"/addcart"})
+public class AddToCartController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +45,10 @@ public class ConfirmBookingController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ConfirmBookingController</title>");
+            out.println("<title>Servlet AddToCartController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ConfirmBookingController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddToCartController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -69,53 +71,52 @@ public class ConfirmBookingController extends HttpServlet {
         String numPeople = request.getParameter("numPeople");
         String numRoom_raw = request.getParameter("numRoom");
         String id_raw = request.getParameter("id");
-
-        double total = 0;
+        
+        User u = ((User) request.getSession().getAttribute("User"));
+        
         RoomDAO rdao = new RoomDAO();
         try {
             int id = Integer.parseInt(id_raw);
             int numRoom = Integer.parseInt(numRoom_raw);
+            int numPerson = Integer.parseInt(numPeople);
+            
+            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
             
             Rooms room = rdao.getRoomById(id);
             
-            total = room.getPrice() * numRoom;
+            double total = room.getPrice() * numRoom;
             
+            String[] skillIds = request.getParameterValues("svId");
+            List<Servicess> listService = new ArrayList<>();
+            if (skillIds != null && skillIds.length != 0) {
+                for (String skillId : skillIds) {
+                    int serviceId = Integer.parseInt(skillId);
+                    Servicess servicess = new ServiceDAO().getServiceById(serviceId);
+                    listService.add(servicess);
+                    total *= 0.95;
+                }
+            }
             
-            request.setAttribute("room", room);
-            System.out.println(room.getPrice());
+            List<Invoices> roomCart = (List<Invoices>) request.getSession().getAttribute("roomCart");
+            Invoices invoices = new Invoices();
+            invoices.setInID(roomCart.size() + 1);
+            invoices.setRoomID(id);
+            invoices.setNumberPerson(numPerson);
+            invoices.setNumberRoom(numRoom);
+            invoices.setReservationStatus(-1);
+            invoices.setUserID(u.getUserId());
+            invoices.setCheckInDate(formater.parse(checkIn));
+            invoices.setCheckOutDate(formater.parse(checkOut));
+            invoices.setTotal(total);
+            invoices.setListService(listService);
+            roomCart.add(invoices);
+            request.getSession().setAttribute("roomCart", roomCart);
+            
         } catch (Exception e) {
             System.out.println("ConfirmBookingController: " + e.getMessage());
         }
         
-        String[] skillIds = request.getParameterValues("svId");
-        List<Servicess> listService = new ArrayList<>();
-        if(skillIds != null && skillIds.length != 0) {
-            for (String skillId : skillIds) {
-                int serviceId = Integer.parseInt(skillId);
-                Servicess servicess = new ServiceDAO().getServiceById(serviceId);
-                listService.add(servicess);
-                total *= 0.95;
-            }
-        }
-        
-        User u = ((User) request.getSession().getAttribute("User"));
-        if(u == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-        
-        
-        
-        request.setAttribute("checkIn", checkIn);
-        request.setAttribute("total", total);
-        request.setAttribute("listService", listService);
-        request.setAttribute("checkOut", checkOut);
-        request.setAttribute("numPeople", numPeople);
-        request.setAttribute("numRoom", numRoom_raw);
-        request.setAttribute("email", u.getEmail());
-        request.setAttribute("phone", u.getPhone());
-        
-        request.getRequestDispatcher("bookingroom.jsp").forward(request, response);
+        response.sendRedirect("home");
     }
 
     /**
@@ -129,7 +130,14 @@ public class ConfirmBookingController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String id = request.getParameter("id");
+        List<Invoices> roomCart = (List<Invoices>) request.getSession().getAttribute("roomCart");
+        for (Invoices invoices : roomCart) {
+            if (id.equalsIgnoreCase(invoices.getInID() + "")) {
+                roomCart.remove(invoices);
+            }
+        }
+        response.sendRedirect("home");
     }
 
     /**

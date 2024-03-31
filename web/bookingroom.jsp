@@ -165,8 +165,8 @@
                 </div>
                 
                 <div class="select-option d-flex justify-content-end" >
-                    <p class="text-left" style="width: fit-content">Total: ${String.format("%,.0f", numRoom * room.getPrice())}</p>
-                    <input type="hidden" name="amount" value="${String.format("%,.0f", numRoom * room.getPrice())}">
+                    <p class="text-left" style="width: fit-content">Total: ${String.format("%,.0f", total)}</p>
+                    <input type="hidden" name="amount" value="${String.format("%,.0f", total)}">
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center;">
