@@ -94,6 +94,7 @@ public class ConfirmBookingController extends HttpServlet {
                 for (Servicess servicess : listService) {
                     total *= 0.95;
                 }
+                listService.clear();
             }
         } catch (Exception e) {
             System.out.println("ConfirmBookingController: " + e.getMessage());
