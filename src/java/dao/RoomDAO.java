@@ -179,6 +179,7 @@ public class RoomDAO extends DBContext {
                 room.setName(resultSet.getString("RoomName"));
                 room.setPrice(resultSet.getDouble("Price"));
                 room.setDetail(resultSet.getString("Details"));
+                room.setTotalRoom(getNumberOfRoom(room));
                 roomList.add(room);
             }
 
@@ -187,6 +188,21 @@ public class RoomDAO extends DBContext {
         }
 
         return roomList;
+    }
+    
+    public int getNumberOfRoom(Rooms room) {
+        String sql = "select count(RoomID) from INVOICES where userid = 9 and RoomID = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, room.getRID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return -1;
     }
 
     public List<Rooms> getRandomRooms(int count) {

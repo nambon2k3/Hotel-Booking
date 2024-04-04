@@ -209,20 +209,17 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li class="active"><a href="home">Home</a></li>
-                                        <li><a href="listroom">Rooms</a></li>
-                                        <li><a href="./about-us.jsp">About Us</a></li>
-                                        <li><a href="./pages.html">Pages</a>
-                                            <ul class="dropdown">
-                                                <li><a href="./room-details.html">Room Details</a></li>
-                                                <li><a href="./blog-details.html">Blog Details</a></li>
-                                                <li><a href="#">Family Room</a></li>
-                                                <li><a href="#">Premium Room</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="./blog.html">News</a></li>
-                                        <li><a href="./contact.jsp">Contact</a></li>
-                                    </ul>
+                                            <c:if test="${sessionScope.User != null}">
+                                                <li><a href="profile">Profile</a></li>
+                                                <li><a href="listbooked">Booked</a></li> 
+                                                <li><a href="cart">Cart</a></li> 
+                                                <li><a href="historybooking">Invoice History</a></li> 
+                                                <li><a href="log">Logout</a></li>
+                                            </c:if>
+                                            <c:if test="${sessionScope.User eq null}">
+                                                <li><a href="login.jsp">Login</a></li>
+                                            </c:if>
+                                        </ul>
                                 </nav>
                                 <div class="nav-right search-switch">
                                     <i class="icon_search"></i>
@@ -261,7 +258,7 @@
                                 <img src="${room.getImg()}" alt="" style="aspect-ratio: 1.5/1">
                                 <div class="ri-text">
                                     <h4>${room.getName()}</h4>
-                                    <h3>${room.getPrice()}$<span>/Pernight</span></h3>
+                                    <h3>${String.format("%,.0f", room.getPrice())} VND<span>/Pernight</span></h3>
                                     <table>
                                         <tbody>
                                             <tr>
@@ -279,6 +276,10 @@
                                             <tr>
                                                 <td class="r-o">Services:</td>
                                                 <td>${room.listServiceInString()}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="r-o">Total booked: </td>
+                                                <td>${room.totalRoom}</td>
                                             </tr>
                                         </tbody>
                                     </table>

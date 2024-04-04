@@ -28,9 +28,26 @@ public class Invoices {
     
     private double total;
     private List<Servicess> listService;
+    private boolean isEnded;
+    
 
     // Constructors, getters, setters, and other methods
 
+    public boolean isIsEnded() {
+        return isEnded;
+    }
+
+    public void setIsEnded(boolean isEnded) {
+        this.isEnded = isEnded;
+    }
+
+    
+    public Date getCheckOutDateInTypeDate() {
+        return this.CheckOutDate;
+    }
+    
+    
+    
     public List<Servicess> getListService() {
         return listService;
     }

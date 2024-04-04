@@ -93,6 +93,10 @@ public class AddToCartController extends HttpServlet {
                     int serviceId = Integer.parseInt(skillId);
                     Servicess servicess = new ServiceDAO().getServiceById(serviceId);
                     listService.add(servicess);
+                }
+            }else {
+                listService = room.getListServiceInListType();
+                for (Servicess servicess : listService) {
                     total *= 0.95;
                 }
             }

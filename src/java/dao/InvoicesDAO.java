@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,6 +67,23 @@ public class InvoicesDAO extends DAL.DBContext {
             return false;
         }
     }
+    
+    public boolean cancelInvoice(String InID) {
+        String updateQuery = "UPDATE INVOICES SET ReservationStatus = 2 WHERE [InID] = ?";
+
+        try ( PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.setString(1, InID);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            System.out.println("updateInvoiceStatusByTransactionCode: " + e.getMessage());
+            return false;
+        }
+    }
 
     public List<Invoices> getAllInvoices() {
         List<Invoices> invoicesList = new ArrayList<>();
@@ -88,6 +106,37 @@ public class InvoicesDAO extends DAL.DBContext {
                 invoice.setNote(resultSet.getString("Note"));
                 invoice.setTransactionCode(resultSet.getString("transactionCode"));
 
+                invoicesList.add(invoice);
+            }
+        } catch (SQLException ex) {
+            System.out.println("getAllInvoices: " + ex.getMessage());
+        }
+
+        return invoicesList;
+    }
+    
+    public List<Invoices> getAllInvoicesByUserId(int userId) {
+        List<Invoices> invoicesList = new ArrayList<>();
+
+        String selectQuery = "SELECT * FROM INVOICES where [UserID] = ? and [transactionCode] is not null";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Invoices invoice = new Invoices();
+                invoice.setInID(resultSet.getInt("InID"));
+                invoice.setUserID(resultSet.getInt("UserID"));
+                invoice.setRoomID(resultSet.getInt("RoomID"));
+                invoice.setCheckInDate(resultSet.getDate("CheckInDate"));
+                invoice.setCheckOutDate(resultSet.getDate("CheckOutDate"));
+                invoice.setReservationStatus(resultSet.getInt("ReservationStatus"));
+                invoice.setNumberPerson(resultSet.getInt("NumberPerson"));
+                invoice.setNumberRoom(resultSet.getInt("NumberRooms"));
+                invoice.setNote(resultSet.getString("Note"));
+                invoice.setTransactionCode(resultSet.getString("transactionCode"));
+                invoice.setIsEnded(invoice.getCheckOutDateInTypeDate().after(new Date()));
                 invoicesList.add(invoice);
             }
         } catch (SQLException ex) {

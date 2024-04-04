@@ -127,6 +127,7 @@
                                                 <li><a href="profile">Profile</a></li>
                                                 <li><a href="listbooked">Booked</a></li> 
                                                 <li><a href="cart">Cart</a></li> 
+                                                <li><a href="historybooking">Invoice Active</a></li>
                                                 <li><a href="log">Logout</a></li>
                                                 </c:if>
                                                 <c:if test="${sessionScope.User eq null}">

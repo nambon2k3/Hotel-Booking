@@ -144,6 +144,10 @@ public class Rooms {
         return listServiceString;
     }
     
+    public List<Servicess> getListServiceInListType(){
+        return getListServiceByRoomId();
+    } 
+    
     
     
     

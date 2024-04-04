@@ -69,43 +69,42 @@ public class ConfirmBookingController extends HttpServlet {
         String numPeople = request.getParameter("numPeople");
         String numRoom_raw = request.getParameter("numRoom");
         String id_raw = request.getParameter("id");
-
+        List<Servicess> listService = new ArrayList<>();
         double total = 0;
         RoomDAO rdao = new RoomDAO();
         try {
             int id = Integer.parseInt(id_raw);
             int numRoom = Integer.parseInt(numRoom_raw);
-            
+
             Rooms room = rdao.getRoomById(id);
-            
+
             total = room.getPrice() * numRoom;
-            
-            
+
             request.setAttribute("room", room);
-            System.out.println(room.getPrice());
+            String[] skillIds = request.getParameterValues("svId");
+            listService = new ArrayList<>();
+            if (skillIds != null && skillIds.length != 0) {
+                for (String skillId : skillIds) {
+                    int serviceId = Integer.parseInt(skillId);
+                    Servicess servicess = new ServiceDAO().getServiceById(serviceId);
+                    listService.add(servicess);
+                }
+            } else {
+                listService = room.getListServiceInListType();
+                for (Servicess servicess : listService) {
+                    total *= 0.95;
+                }
+            }
         } catch (Exception e) {
             System.out.println("ConfirmBookingController: " + e.getMessage());
         }
-        
-        String[] skillIds = request.getParameterValues("svId");
-        List<Servicess> listService = new ArrayList<>();
-        if(skillIds != null && skillIds.length != 0) {
-            for (String skillId : skillIds) {
-                int serviceId = Integer.parseInt(skillId);
-                Servicess servicess = new ServiceDAO().getServiceById(serviceId);
-                listService.add(servicess);
-                total *= 0.95;
-            }
-        }
-        
+
         User u = ((User) request.getSession().getAttribute("User"));
-        if(u == null) {
+        if (u == null) {
             response.sendRedirect("login.jsp");
             return;
         }
-        
-        
-        
+
         request.setAttribute("checkIn", checkIn);
         request.setAttribute("total", total);
         request.setAttribute("listService", listService);
@@ -114,7 +113,7 @@ public class ConfirmBookingController extends HttpServlet {
         request.setAttribute("numRoom", numRoom_raw);
         request.setAttribute("email", u.getEmail());
         request.setAttribute("phone", u.getPhone());
-        
+
         request.getRequestDispatcher("bookingroom.jsp").forward(request, response);
     }
 
