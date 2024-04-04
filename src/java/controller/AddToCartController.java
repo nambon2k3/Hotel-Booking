@@ -99,6 +99,7 @@ public class AddToCartController extends HttpServlet {
                 for (Servicess servicess : listService) {
                     total *= 0.95;
                 }
+                listService.clear();
             }
             
             List<Invoices> roomCart = (List<Invoices>) request.getSession().getAttribute("roomCart");
